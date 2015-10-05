@@ -5,15 +5,15 @@ import java.io.Console;
 
 public class AuthorizationService {
 
-    private User curUser;
+    private User currentUser;
     private UserStore userStore;
     private Scanner scanner;
-    private Console cons;
+    private Console console;
 
     public AuthorizationService(UserStore userStore) {
         this.userStore = userStore;
         scanner = new Scanner(System.in);
-        cons = System.console();
+        console = System.console();
     }
 
     void startAuthorization() {
@@ -39,31 +39,32 @@ public class AuthorizationService {
     }
 
     User login() {
-//            1. Ask for name
-//            2. Ask for password
-//            3. Ask UserStore for user:  userStore.getUser(name, pass)
+        // 1. Ask for name
+        // 2. Ask for password
+        // 3. Ask UserStore for user:  userStore.getUser(name, pass)
         System.out.print("Login: ");
         String name = scanner.next();
         if (userStore.isUserExist(name)) {
             String pass = null;
             while (true) {
                 System.out.print("Password: ");
-                if(cons != null)
-                    pass = new String(cons.readPassword());
-                else
+                if (console != null) {
+                    pass = new String(console.readPassword());
+                } else {
                     pass = scanner.next();
-
-                if ((curUser = userStore.getUser(name, pass)) == null)
+                }
+                if ((currentUser = userStore.getUser(name, pass)) == null) {
                     System.out.println("Error. Wrong password. Try again.");
-                else
+                } else {
                     break;
+                }
             }
             System.out.println();
-            System.out.println("Hello, " + curUser.getName() + "!");
+            System.out.println("Hello, " + currentUser.getName() + "!");
         } else {
             System.out.println("Error. The user with this name doesn't exist.");
         }
-        return curUser;
+        return currentUser;
     }
 
     User creatUser() {
@@ -74,18 +75,20 @@ public class AuthorizationService {
         String name = scanner.next();
         System.out.print("Type your new password: ");
         String pass = null;
-        if(cons != null)
-            pass = new String(cons.readPassword());
-        else
+        if (console != null) {
+            pass = new String(console.readPassword());
+        } else {
             pass = scanner.next();
+        }
         User newUser = new User(name, pass);
         userStore.addUser(newUser);
         return newUser;
     }
 
     boolean isLogin() {
-        if (curUser == null)
+        if (currentUser == null) {
             return true;
+        }
         return false;
     }
 }
