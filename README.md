@@ -1,1 +1,1 @@
-Hello, git! You are prefect!
+Руслан Рахимов AMC-11
