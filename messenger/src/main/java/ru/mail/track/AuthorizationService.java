@@ -1,10 +1,14 @@
 package ru.mail.track;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.mail.track.message.User;
 import ru.mail.track.message.UserStore;
 
 public class AuthorizationService {
+
+    static Logger log = LoggerFactory.getLogger(AuthorizationService.class);
 
     private UserStore userStore;
 
@@ -12,30 +16,26 @@ public class AuthorizationService {
         this.userStore = userStore;
     }
 
-    void startAuthorization() {
-        if (isLogin()) {
-            login();
+    public User login(String name, String password) {
+        if (userStore.isUserExist(name)) {
+            User user = userStore.getUser(name, password);
+            if (user != null) {
+                return user;
+            } else {
+                log.info("login: Wrong password.");
+            }
         }
-    }
-
-    User login() {
-//            1. Ask for name
-//            2. Ask for password
-//            3. Ask UserStore for user:  userStore.getUser(name, pass)
-
-
+        log.info("login: The user with this name doesn't exist.");
         return null;
     }
 
-    User creatUser() {
-        // 1. Ask for name
-        // 2. Ask for pass
-        // 3. Add user to UserStore: userStore.addUser(user)
-
+    public User creatUser(String name, String password) {
+        if (userStore.isUserExist(name) == false) {
+            User user = new User(name, password);
+            userStore.addUser(user);
+            return user;
+        }
+        log.info("creatUser: The user with this name has already existed.");
         return null;
-    }
-
-    boolean isLogin() {
-        return false;
     }
 }

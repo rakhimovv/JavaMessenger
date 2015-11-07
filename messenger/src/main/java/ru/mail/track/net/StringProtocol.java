@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.mail.track.comands.CommandType;
+import ru.mail.track.message.HelpMessage;
 import ru.mail.track.message.LoginMessage;
 import ru.mail.track.message.Message;
 import ru.mail.track.message.SendMessage;
@@ -24,10 +25,14 @@ public class StringProtocol implements Protocol {
         String[] tokens = str.split(DELIMITER);
         CommandType type = CommandType.valueOf(tokens[0]);
         switch (type) {
+            case USER_HELP:
+                HelpMessage helpMessage = new HelpMessage();
+                return helpMessage;
             case USER_LOGIN:
                 LoginMessage loginMessage = new LoginMessage();
-                loginMessage.setLogin(tokens[1]);
-                loginMessage.setPass(tokens[2]);
+                loginMessage.setArgType(Integer.parseInt(tokens[1]));
+                loginMessage.setLogin(tokens[2]);
+                loginMessage.setPass(tokens[3]);
                 return loginMessage;
             case MSG_SEND:
                 SendMessage sendMessage = new SendMessage();
@@ -45,8 +50,12 @@ public class StringProtocol implements Protocol {
         CommandType type = msg.getType();
         builder.append(type).append(DELIMITER);
         switch (type) {
+            case USER_HELP:
+                HelpMessage helpMessage = (HelpMessage) msg;
+                break;
             case USER_LOGIN:
                 LoginMessage loginMessage = (LoginMessage) msg;
+                builder.append(loginMessage.getArgType()).append(DELIMITER);
                 builder.append(loginMessage.getLogin()).append(DELIMITER);
                 builder.append(loginMessage.getPass()).append(DELIMITER);
                 break;
@@ -57,13 +66,10 @@ public class StringProtocol implements Protocol {
                 break;
             default:
                 throw new RuntimeException("Invalid type: " + type);
-
-
         }
         log.info("encoded: {}", builder.toString());
         return builder.toString().getBytes();
     }
-
 
 
 }

@@ -30,8 +30,18 @@ public class UserStoreStub implements UserStore {
     }
 
     @Override
+    public boolean isUserExist(String login) {
+        for (User user : users.values()) {
+            if (user.getName().equals(login)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public User addUser(User user) {
-        User item = users.put(user.getId(), user);
+        User item = users.put(users.size() + 1L, user);
         return item;
     }
 

@@ -2,6 +2,7 @@ package ru.mail.track.net;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.mail.track.AuthorizationService;
 import ru.mail.track.comands.*;
 import ru.mail.track.message.MessageStore;
 import ru.mail.track.message.MessageStoreStub;
@@ -50,9 +51,10 @@ public class ThreadedServer {
 
         UserStore userStore = new UserStoreStub();
         MessageStore messageStore = new MessageStoreStub();
+        AuthorizationService authService = new AuthorizationService(userStore);
 
         Map<CommandType, Command> cmds = new HashMap<>();
-        cmds.put(CommandType.USER_LOGIN, new LoginCommand(userStore, sessionManager));
+        cmds.put(CommandType.USER_LOGIN, new LoginCommand(authService, sessionManager));
         cmds.put(CommandType.MSG_SEND, new SendCommand(sessionManager, messageStore));
         cmds.put(CommandType.USER_HELP, new HelpCommand(cmds));
         CommandHandler handler = new CommandHandler(cmds);

@@ -3,6 +3,7 @@ package ru.mail.track.comands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.mail.track.AuthorizationService;
 import ru.mail.track.message.LoginMessage;
 import ru.mail.track.message.Message;
 import ru.mail.track.message.User;
@@ -17,11 +18,11 @@ public class LoginCommand implements Command {
 
     static Logger log = LoggerFactory.getLogger(LoginCommand.class);
 
-    private UserStore userStore;
+    private AuthorizationService authService;
     private SessionManager sessionManager;
 
-    public LoginCommand(UserStore userStore, SessionManager sessionManager) {
-        this.userStore = userStore;
+    public LoginCommand(AuthorizationService authService, SessionManager sessionManager) {
+        this.authService = authService;
         this.sessionManager = sessionManager;
     }
 
@@ -34,10 +35,21 @@ public class LoginCommand implements Command {
             return;
         } else {
             LoginMessage loginMsg = (LoginMessage) msg;
-            User user = userStore.getUser(loginMsg.getLogin(), loginMsg.getPass());
-            session.setSessionUser(user);
-            sessionManager.registerUser(user.getId(), session.getId());
-            log.info("Success login: {}", user);
+            if (loginMsg.getArgType() == loginMsg.LOGIN) {
+                User user = authService.login(loginMsg.getLogin(), loginMsg.getPass());
+                if (user != null) {
+                    session.setSessionUser(user);
+                    sessionManager.registerUser(user.getId(), session.getId());
+                    log.info("Success login: {}", user);
+                }
+            } else if (loginMsg.getArgType() == loginMsg.CREAT_USER) {
+                User user = authService.creatUser(loginMsg.getLogin(), loginMsg.getPass());
+                if (user != null) {
+                    log.info("Success creatUser: {}", user);
+                }
+            } else {
+                log.info("Wrong argType: {}", loginMsg.getArgType());
+            }
         }
         /*
         А эта часть у нас уже реализована

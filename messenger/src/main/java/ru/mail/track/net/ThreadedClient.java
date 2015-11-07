@@ -3,6 +3,7 @@ package ru.mail.track.net;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mail.track.comands.CommandType;
+import ru.mail.track.message.HelpMessage;
 import ru.mail.track.message.LoginMessage;
 import ru.mail.track.message.Message;
 import ru.mail.track.message.SendMessage;
@@ -67,9 +68,25 @@ public class ThreadedClient implements MessageListener {
             case "login":
                 LoginMessage loginMessage = new LoginMessage();
                 loginMessage.setType(CommandType.USER_LOGIN);
-                loginMessage.setLogin(tokens[1]);
-                loginMessage.setPass(tokens[2]);
-                handler.send(loginMessage);
+                switch (tokens.length) {
+                    case 3:
+                        loginMessage.setArgType(loginMessage.LOGIN);
+                        loginMessage.setLogin(tokens[1]);
+                        loginMessage.setPass(tokens[2]);
+                        handler.send(loginMessage);
+                        break;
+                    case 1:
+                        loginMessage.setArgType(loginMessage.CREAT_USER);
+                        System.out.println("Write your new login and password:");
+                        Scanner scanner = new Scanner(System.in);
+                        String[] args = scanner.nextLine().split(" ");
+                        loginMessage.setLogin(args[0]);
+                        loginMessage.setPass(args[1]);
+                        handler.send(loginMessage);
+                        break;
+                    default:
+                        System.out.println("Wrong amount of arguments. Try <help>");
+                }
                 break;
             case "send":
                 SendMessage sendMessage = new SendMessage();
@@ -78,17 +95,19 @@ public class ThreadedClient implements MessageListener {
                 sendMessage.setMessage(tokens[2]);
                 handler.send(sendMessage);
                 break;
+            case "help":
+                HelpMessage helpMessage = new HelpMessage();
+                handler.send(helpMessage);
+                break;
             default:
                 System.out.println("Invalid input: " + line);
         }
-
 
 
     }
 
     /**
      * Получено сообщение из handler, как обрабатывать
-     *
      */
     @Override
     public void onMessage(Session session, Message msg) {
