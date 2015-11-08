@@ -18,8 +18,10 @@ public class HelpCommand implements Command {
     static Logger log = LoggerFactory.getLogger(LoginCommand.class);
 
     private Map<CommandType, Command> commands;
+    private String answer;
 
     public HelpCommand(Map<CommandType, Command> commands) {
+        this.answer = new String();
         this.commands = commands;
     }
 
@@ -31,7 +33,6 @@ public class HelpCommand implements Command {
          * Если будем работать через сеть, то команде придется передать также объект для работы с сетью
          */
 
-        String answer = new String();
         for (Map.Entry<CommandType, Command> entry : commands.entrySet()) {
             answer += entry.getKey() + "\n";
         }
