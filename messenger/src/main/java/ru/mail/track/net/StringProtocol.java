@@ -4,10 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.mail.track.comands.CommandType;
-import ru.mail.track.message.HelpMessage;
-import ru.mail.track.message.LoginMessage;
-import ru.mail.track.message.Message;
-import ru.mail.track.message.SendMessage;
+import ru.mail.track.message.*;
 
 /**
  *
@@ -28,6 +25,12 @@ public class StringProtocol implements Protocol {
             case USER_HELP:
                 HelpMessage helpMessage = new HelpMessage();
                 return helpMessage;
+            case USER_INFO:
+                LoginMessage userInfoMessage = new LoginMessage();
+                userInfoMessage.setType(CommandType.USER_INFO);
+                userInfoMessage.setArgType(Integer.parseInt(tokens[1]));
+                userInfoMessage.setUserId(Long.parseLong(tokens[2]));
+                return userInfoMessage;
             case USER_LOGIN:
                 LoginMessage loginMessage = new LoginMessage();
                 loginMessage.setArgType(Integer.parseInt(tokens[1]));
@@ -52,6 +55,11 @@ public class StringProtocol implements Protocol {
         switch (type) {
             case USER_HELP:
                 HelpMessage helpMessage = (HelpMessage) msg;
+                break;
+            case USER_INFO:
+                LoginMessage userInfoMessage = (LoginMessage) msg;
+                builder.append(userInfoMessage.getArgType()).append(DELIMITER);
+                builder.append(userInfoMessage.getUserId()).append(DELIMITER);
                 break;
             case USER_LOGIN:
                 LoginMessage loginMessage = (LoginMessage) msg;

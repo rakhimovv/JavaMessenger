@@ -42,12 +42,6 @@ public class LoginCommand implements Command {
             String name = loginMsg.getLogin();
             String password = loginMsg.getPass();
             if (loginMsg.getArgType() == loginMsg.LOGIN) {
-                /*User user = authService.login(loginMsg.getLogin(), loginMsg.getPass());
-                if (user != null) {
-                    session.setSessionUser(user);
-                    sessionManager.registerUser(user.getId(), session.getId());
-                    log.info("Success login: {}", user);
-                }*/
                 if (userStore.isUserExist(name)) {
                     User user = userStore.getUser(name, password);
                     if (user != null) {
@@ -63,10 +57,6 @@ public class LoginCommand implements Command {
                     answer = "The user with this name doesn't exist.";
                 }
             } else if (loginMsg.getArgType() == loginMsg.CREAT_USER) {
-                /*User user = authService.creatUser(loginMsg.getLogin(), loginMsg.getPass());
-                if (user != null) {
-                    log.info("Success creatUser: {}", user);
-                }*/
                 if (userStore.isUserExist(name) == false) {
                     User user = new User(name, password);
                     userStore.addUser(user);

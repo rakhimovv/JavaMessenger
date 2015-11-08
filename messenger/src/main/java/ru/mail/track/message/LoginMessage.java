@@ -9,9 +9,12 @@ public class LoginMessage extends Message {
 
     public static final int LOGIN = 1;
     public static final int CREAT_USER = 2;
+    public static final int SELF_INFO = 3;
+    public static final int ID_INFO = 4;
     private int argType;
     private String login;
     private String pass;
+    private Long id;
 
     public LoginMessage() {
         setType(CommandType.USER_LOGIN);
@@ -39,5 +42,13 @@ public class LoginMessage extends Message {
 
     public void setArgType(int argType) {
         this.argType = argType;
+    }
+
+    public Long getUserId() {
+        return id;
+    }
+
+    public void setUserId(Long id) {
+        this.id = id;
     }
 }

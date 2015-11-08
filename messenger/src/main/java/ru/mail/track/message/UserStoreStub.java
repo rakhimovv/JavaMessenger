@@ -57,6 +57,6 @@ public class UserStoreStub implements UserStore {
 
     @Override
     public User getUserById(Long id) {
-        return null;
+        return users.get(id);
     }
 }

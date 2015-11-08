@@ -3,10 +3,7 @@ package ru.mail.track.net;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mail.track.comands.CommandType;
-import ru.mail.track.message.HelpMessage;
-import ru.mail.track.message.LoginMessage;
-import ru.mail.track.message.Message;
-import ru.mail.track.message.SendMessage;
+import ru.mail.track.message.*;
 import ru.mail.track.session.Session;
 
 import java.io.IOException;
@@ -97,7 +94,26 @@ public class ThreadedClient implements MessageListener {
                 break;
             case "help":
                 HelpMessage helpMessage = new HelpMessage();
+                helpMessage.setType(CommandType.USER_HELP);
                 handler.send(helpMessage);
+                break;
+            case "user_info":
+                LoginMessage userInfoMessage = new LoginMessage();
+                userInfoMessage.setType(CommandType.USER_INFO);
+                switch (tokens.length) {
+                    case 1:
+                        userInfoMessage.setArgType(userInfoMessage.SELF_INFO);
+                        userInfoMessage.setUserId(0L);
+                        handler.send(userInfoMessage);
+                        break;
+                    case 2:
+                        userInfoMessage.setArgType(userInfoMessage.ID_INFO);
+                        userInfoMessage.setUserId(Long.parseLong(tokens[1]));
+                        handler.send(userInfoMessage);
+                        break;
+                    default:
+                        System.out.println("Wrong amount of arguments. Try <help>");
+                }
                 break;
             default:
                 System.out.println("Invalid input: " + line);
