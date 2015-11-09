@@ -48,6 +48,10 @@ public class LoginCommand implements Command {
                         session.setSessionUser(user);
                         sessionManager.registerUser(user.getId(), session.getId());
                         log.info("Success login: {}", user);
+                        UserInfoCommand userInfoCommand = new UserInfoCommand(userStore, sessionManager);
+                        LoginMessage userInfoMessage = new LoginMessage();
+                        userInfoMessage.setArgType(userInfoMessage.SELF_INFO);
+                        userInfoCommand.execute(session, userInfoMessage);
                     } else {
                         log.info("login: Wrong password.");
                         answer = "Wrong password.";
