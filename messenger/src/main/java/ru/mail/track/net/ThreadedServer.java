@@ -56,7 +56,8 @@ public class ThreadedServer {
         Map<CommandType, Command> cmds = new HashMap<>();
         //cmds.put(CommandType.USER_LOGIN, new LoginCommand(authService, sessionManager));
         cmds.put(CommandType.USER_LOGIN, new LoginCommand(userStore, sessionManager));
-        cmds.put(CommandType.USER_INFO, new UserInfoCommand(userStore, sessionManager));
+        cmds.put(CommandType.USER_INFO, new UserInfoCommand(userStore));
+        cmds.put(CommandType.USER_PASS, new UserPassCommand());
         cmds.put(CommandType.MSG_SEND, new SendCommand(sessionManager, messageStore));
         cmds.put(CommandType.USER_HELP, new HelpCommand(cmds));
         CommandHandler handler = new CommandHandler(cmds);

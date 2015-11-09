@@ -18,20 +18,17 @@ public class UserInfoCommand implements Command {
     static Logger log = LoggerFactory.getLogger(UserInfoCommand.class);
 
     private UserStore userStore;
-    private SessionManager sessionManager;
     private String answer;
 
-    public UserInfoCommand(UserStore userStore, SessionManager sessionManager) {
-        this.answer = new String();
+    public UserInfoCommand(UserStore userStore) {
         this.userStore = userStore;
-        this.sessionManager = sessionManager;
     }
 
 
     @Override
     public void execute(Session session, Message msg) {
         LoginMessage userInfoMsg = (LoginMessage) msg;
-        if(userInfoMsg.getArgType() == userInfoMsg.SELF_INFO) {
+        if (userInfoMsg.getArgType() == userInfoMsg.SELF_INFO) {
             if (session.getSessionUser() != null) {
                 answer += "login: " + session.getSessionUser().getName() + "\n";
                 answer += "password: " + session.getSessionUser().getPass() + "\n";
@@ -42,7 +39,7 @@ public class UserInfoCommand implements Command {
             }
         } else if (userInfoMsg.getArgType() == userInfoMsg.ID_INFO) {
             User user = userStore.getUserById(userInfoMsg.getUserId());
-            if(user != null) {
+            if (user != null) {
                 answer += "login: " + user.getName() + "\n";
                 answer += "password: " + user.getPass() + "\n";
                 log.info("Success id_info: {}", userStore.getUserById(userInfoMsg.getUserId()));

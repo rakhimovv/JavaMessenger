@@ -24,7 +24,6 @@ public class LoginCommand implements Command {
 
     //public LoginCommand(AuthorizationService authService, SessionManager sessionManager) {
     public LoginCommand(UserStore userStore, SessionManager sessionManager) {
-        this.answer = new String();
         //this.authService = authService;
         this.userStore = userStore;
         this.sessionManager = sessionManager;
@@ -48,7 +47,7 @@ public class LoginCommand implements Command {
                         session.setSessionUser(user);
                         sessionManager.registerUser(user.getId(), session.getId());
                         log.info("Success login: {}", user);
-                        UserInfoCommand userInfoCommand = new UserInfoCommand(userStore, sessionManager);
+                        UserInfoCommand userInfoCommand = new UserInfoCommand(userStore);
                         LoginMessage userInfoMessage = new LoginMessage();
                         userInfoMessage.setArgType(userInfoMessage.SELF_INFO);
                         userInfoCommand.execute(session, userInfoMessage);
@@ -61,7 +60,7 @@ public class LoginCommand implements Command {
                     answer = "The user with this name doesn't exist.";
                 }
             } else if (loginMsg.getArgType() == loginMsg.CREAT_USER) {
-                if (userStore.isUserExist(name) == false) {
+                if (!userStore.isUserExist(name)) {
                     User user = new User(name, password);
                     userStore.addUser(user);
                     log.info("Success creat_user: {}", user);

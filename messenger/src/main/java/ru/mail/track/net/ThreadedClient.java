@@ -93,7 +93,6 @@ public class ThreadedClient implements MessageListener {
                 handler.send(sendMessage);
                 break;
             case "help":
-                //HelpMessage helpMessage = new HelpMessage();
                 SendMessage helpMessage = new SendMessage();
                 helpMessage.setType(CommandType.USER_HELP);
                 handler.send(helpMessage);
@@ -111,6 +110,22 @@ public class ThreadedClient implements MessageListener {
                         userInfoMessage.setArgType(userInfoMessage.ID_INFO);
                         userInfoMessage.setUserId(Long.parseLong(tokens[1]));
                         handler.send(userInfoMessage);
+                        break;
+                    default:
+                        System.out.println("Wrong amount of arguments. Try <help>");
+                }
+                break;
+            case "user_pass":
+                LoginMessage userPassMessage = new LoginMessage();
+                userPassMessage.setType(CommandType.USER_PASS);
+                switch (tokens.length) {
+                    case 3:
+                        if (tokens[1].equals(tokens[2])) {
+                            userPassMessage.setPass(tokens[1]);
+                            handler.send(userPassMessage);
+                        } else {
+                            System.out.println("Passwords mismatch.");
+                        }
                         break;
                     default:
                         System.out.println("Wrong amount of arguments. Try <help>");

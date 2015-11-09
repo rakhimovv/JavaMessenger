@@ -7,10 +7,10 @@ import ru.mail.track.comands.CommandType;
  */
 public class LoginMessage extends Message {
 
-    public static final int LOGIN = 1;
-    public static final int CREAT_USER = 2;
-    public static final int SELF_INFO = 3;
-    public static final int ID_INFO = 4;
+    public final int LOGIN = 1;
+    public final int CREAT_USER = 2;
+    public final int SELF_INFO = 3;
+    public final int ID_INFO = 4;
     private int argType;
     private String login;
     private String pass;

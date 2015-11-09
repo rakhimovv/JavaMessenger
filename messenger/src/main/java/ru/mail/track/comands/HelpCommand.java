@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.mail.track.message.HelpMessage;
 import ru.mail.track.message.SendMessage;
 import ru.mail.track.message.Message;
 import ru.mail.track.session.Session;
@@ -21,7 +20,6 @@ public class HelpCommand implements Command {
     private String answer;
 
     public HelpCommand(Map<CommandType, Command> commands) {
-        this.answer = new String();
         this.commands = commands;
     }
 
