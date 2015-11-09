@@ -93,7 +93,8 @@ public class ThreadedClient implements MessageListener {
                 handler.send(sendMessage);
                 break;
             case "help":
-                HelpMessage helpMessage = new HelpMessage();
+                //HelpMessage helpMessage = new HelpMessage();
+                SendMessage helpMessage = new SendMessage();
                 helpMessage.setType(CommandType.USER_HELP);
                 handler.send(helpMessage);
                 break;

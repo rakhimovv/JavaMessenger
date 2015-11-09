@@ -23,7 +23,8 @@ public class StringProtocol implements Protocol {
         CommandType type = CommandType.valueOf(tokens[0]);
         switch (type) {
             case USER_HELP:
-                HelpMessage helpMessage = new HelpMessage();
+                SendMessage helpMessage = new SendMessage();
+                helpMessage.setType(CommandType.USER_HELP);
                 return helpMessage;
             case USER_INFO:
                 LoginMessage userInfoMessage = new LoginMessage();
@@ -54,7 +55,6 @@ public class StringProtocol implements Protocol {
         builder.append(type).append(DELIMITER);
         switch (type) {
             case USER_HELP:
-                HelpMessage helpMessage = (HelpMessage) msg;
                 break;
             case USER_INFO:
                 LoginMessage userInfoMessage = (LoginMessage) msg;
