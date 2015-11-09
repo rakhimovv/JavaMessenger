@@ -11,5 +11,6 @@ public enum CommandType {
     USER_PASS,
     CHAT_LIST,
     CHAT_CREATE,
+    CHAT_HISTORY,
 
 }

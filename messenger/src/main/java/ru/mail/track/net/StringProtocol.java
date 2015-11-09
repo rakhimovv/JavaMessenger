@@ -30,6 +30,11 @@ public class StringProtocol implements Protocol {
                 SendMessage chatListMessage = new SendMessage();
                 chatListMessage.setType(CommandType.CHAT_LIST);
                 return chatListMessage;
+            case CHAT_HISTORY:
+                SendMessage chatHistoryMessage = new SendMessage();
+                chatHistoryMessage.setType(CommandType.CHAT_HISTORY);
+                chatHistoryMessage.setMessage(tokens[1]);
+                return chatHistoryMessage;
             case CHAT_CREATE:
                 SendMessage chatCreateMessage = new SendMessage();
                 chatCreateMessage.setType(CommandType.CHAT_CREATE);
@@ -75,6 +80,10 @@ public class StringProtocol implements Protocol {
             case CHAT_CREATE:
                 SendMessage chatCreateMessage = (SendMessage) msg;
                 builder.append(chatCreateMessage.getMessage()).append(DELIMITER);
+                break;
+            case CHAT_HISTORY:
+                SendMessage chatHistoryMessage = (SendMessage) msg;
+                builder.append(chatHistoryMessage.getMessage()).append(DELIMITER);
                 break;
             case USER_PASS:
                 LoginMessage userPassMessage = (LoginMessage) msg;

@@ -36,6 +36,7 @@ public class LoginCommand implements Command {
             log.info("User {} already logged in.", session.getSessionUser());
             answer = "You have already logged in.";
         } else {
+            // TODO: вынети логику в AuthorizationService
             LoginMessage loginMsg = (LoginMessage) msg;
             String name = loginMsg.getLogin();
             String password = loginMsg.getPass();

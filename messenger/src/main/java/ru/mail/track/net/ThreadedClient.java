@@ -149,6 +149,18 @@ public class ThreadedClient implements MessageListener {
                         System.out.println("Wrong amount of arguments. Try <help>");
                 }
                 break;
+            case "chat_history":
+                SendMessage chatHistoryMessage = new SendMessage();
+                chatHistoryMessage.setType(CommandType.CHAT_HISTORY);
+                switch (tokens.length) {
+                    case 2:
+                        chatHistoryMessage.setMessage(tokens[1]);
+                        handler.send(chatHistoryMessage);
+                        break;
+                    default:
+                        System.out.println("Wrong amount of arguments. Try <help>");
+                }
+                break;
             default:
                 System.out.println("Invalid input: " + line);
         }

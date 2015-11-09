@@ -26,6 +26,7 @@ public class CommandHandler implements MessageListener {
     public void onMessage(Session session, Message message) {
         Command cmd = commands.get(message.getType());
         log.info("onMessage: {} type {}", message, message.getType());
+        // TODO: заставить execute возвращать CommandResult и уже здесь его обработать
         cmd.execute(session, message);
     }
 }

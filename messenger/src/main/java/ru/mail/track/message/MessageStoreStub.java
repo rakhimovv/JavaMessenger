@@ -44,6 +44,15 @@ public class MessageStoreStub implements MessageStore {
         chats.put(2L, chat2);
     }
 
+    public MessageStoreStub() {
+        for (SendMessage msg : messages1) {
+            addMessage(1L, msg);
+        }
+        for (SendMessage msg : messages2) {
+            addMessage(2L, msg);
+        }
+    }
+
     @Override
     public List<Long> getChatsByUserId(Long userId) {
         List<Long> chatIds = new ArrayList<>();
