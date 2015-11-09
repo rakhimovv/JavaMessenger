@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class ChatListCommand implements Command {
 
-    static Logger log = LoggerFactory.getLogger(UserInfoCommand.class);
+    static Logger log = LoggerFactory.getLogger(ChatListCommand.class);
 
     private MessageStore messageStore;
     private String answer;
@@ -37,7 +37,7 @@ public class ChatListCommand implements Command {
                     answer += " " + chatId;
                 }
             }
-            log.info("Success self_info: {}", session.getSessionUser());
+            log.info("Success chat_list: {}", session.getSessionUser());
         } else {
             answer = "You are not logged in.";
             log.info("User isn't logged in.");

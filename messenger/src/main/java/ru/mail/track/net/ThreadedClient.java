@@ -9,6 +9,7 @@ import ru.mail.track.session.Session;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -135,6 +136,18 @@ public class ThreadedClient implements MessageListener {
                 SendMessage chatListMessage = new SendMessage();
                 chatListMessage.setType(CommandType.CHAT_LIST);
                 handler.send(chatListMessage);
+                break;
+            case "chat_create":
+                SendMessage chatCreateMessage = new SendMessage();
+                chatCreateMessage.setType(CommandType.CHAT_CREATE);
+                switch (tokens.length) {
+                    case 2:
+                        chatCreateMessage.setMessage(tokens[1]);
+                        handler.send(chatCreateMessage);
+                        break;
+                    default:
+                        System.out.println("Wrong amount of arguments. Try <help>");
+                }
                 break;
             default:
                 System.out.println("Invalid input: " + line);

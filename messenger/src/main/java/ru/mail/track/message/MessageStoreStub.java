@@ -84,4 +84,9 @@ public class MessageStoreStub implements MessageStore {
     public void addUserToChat(Long userId, Long chatId) {
 
     }
+
+    @Override
+    public void addChat(Chat chat) {
+        chats.put(chats.size() + 1L, chat);
+    }
 }
