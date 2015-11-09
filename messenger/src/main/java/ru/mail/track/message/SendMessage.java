@@ -1,6 +1,6 @@
 package ru.mail.track.message;
 
-import ru.mail.track.comands.CommandType;
+import ru.mail.track.commands.CommandType;
 
 /**
  *

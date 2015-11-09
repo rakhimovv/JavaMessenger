@@ -2,7 +2,7 @@ package ru.mail.track.net;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.mail.track.comands.CommandType;
+import ru.mail.track.commands.CommandType;
 import ru.mail.track.message.*;
 import ru.mail.track.session.Session;
 

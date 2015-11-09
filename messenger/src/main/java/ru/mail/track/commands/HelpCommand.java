@@ -1,4 +1,4 @@
-package ru.mail.track.comands;
+package ru.mail.track.commands;
 
 import java.io.IOException;
 import java.util.Map;

@@ -1,11 +1,9 @@
-package ru.mail.track.comands;
+package ru.mail.track.commands;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.mail.track.AuthorizationService;
 import ru.mail.track.message.*;
-import ru.mail.track.net.SessionManager;
 import ru.mail.track.session.Session;
 
 import java.io.IOException;

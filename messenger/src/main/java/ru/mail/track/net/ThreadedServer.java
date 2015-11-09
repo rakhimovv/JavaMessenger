@@ -3,7 +3,7 @@ package ru.mail.track.net;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mail.track.AuthorizationService;
-import ru.mail.track.comands.*;
+import ru.mail.track.commands.*;
 import ru.mail.track.message.MessageStore;
 import ru.mail.track.message.MessageStoreStub;
 import ru.mail.track.message.UserStore;
