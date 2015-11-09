@@ -12,5 +12,6 @@ public enum CommandType {
     CHAT_LIST,
     CHAT_CREATE,
     CHAT_HISTORY,
+    CHAT_FIND
 
 }
