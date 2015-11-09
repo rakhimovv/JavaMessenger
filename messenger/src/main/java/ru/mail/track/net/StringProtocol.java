@@ -26,6 +26,10 @@ public class StringProtocol implements Protocol {
                 SendMessage helpMessage = new SendMessage();
                 helpMessage.setType(CommandType.USER_HELP);
                 return helpMessage;
+            case CHAT_LIST:
+                SendMessage chatListMessage = new SendMessage();
+                chatListMessage.setType(CommandType.CHAT_LIST);
+                return chatListMessage;
             case USER_PASS:
                 LoginMessage userPassMessage = new LoginMessage();
                 userPassMessage.setType(CommandType.USER_PASS);
@@ -60,6 +64,8 @@ public class StringProtocol implements Protocol {
         builder.append(type).append(DELIMITER);
         switch (type) {
             case USER_HELP:
+                break;
+            case CHAT_LIST:
                 break;
             case USER_PASS:
                 LoginMessage userPassMessage = (LoginMessage) msg;

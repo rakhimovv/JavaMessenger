@@ -9,27 +9,37 @@ import ru.mail.track.net.SessionManager;
 import ru.mail.track.session.Session;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Выполняем авторизацию по этой команде
  */
-public class UserPassCommand implements Command {
+public class ChatListCommand implements Command {
 
-    static Logger log = LoggerFactory.getLogger(UserPassCommand.class);
+    static Logger log = LoggerFactory.getLogger(UserInfoCommand.class);
 
-    private UserStore userStore;
-    private SessionManager sessionManager;
+    private MessageStore messageStore;
     private String answer;
+
+    public ChatListCommand(MessageStore messageStore) {
+        this.messageStore = messageStore;
+    }
 
 
     @Override
     public void execute(Session session, Message msg) {
-        LoginMessage userPassMsg = (LoginMessage) msg;
-        User user;
-        if ((user = session.getSessionUser()) != null) {
-            user.setPass(userPassMsg.getPass());
-            answer = "The password changed.";
-            log.info("Success set_pass: {}", user);
+        SendMessage chatListMsg = (SendMessage) msg;
+        if (session.getSessionUser() != null) {
+            List<Long> chatIds = messageStore.getChatsByUserId(session.getSessionUser().getId());
+            if (chatIds.isEmpty()) {
+                answer += "You have no any chats:";
+            } else {
+                answer += "Your chats:";
+                for (Long chatId : chatIds) {
+                    answer += " " + chatId;
+                }
+            }
+            log.info("Success self_info: {}", session.getSessionUser());
         } else {
             answer = "You are not logged in.";
             log.info("User isn't logged in.");

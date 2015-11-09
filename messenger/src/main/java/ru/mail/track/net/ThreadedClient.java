@@ -131,6 +131,11 @@ public class ThreadedClient implements MessageListener {
                         System.out.println("Wrong amount of arguments. Try <help>");
                 }
                 break;
+            case "chat_list":
+                SendMessage chatListMessage = new SendMessage();
+                chatListMessage.setType(CommandType.CHAT_LIST);
+                handler.send(chatListMessage);
+                break;
             default:
                 System.out.println("Invalid input: " + line);
         }

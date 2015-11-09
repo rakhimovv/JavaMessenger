@@ -14,7 +14,7 @@ import ru.mail.track.session.Session;
  */
 public class HelpCommand implements Command {
 
-    static Logger log = LoggerFactory.getLogger(LoginCommand.class);
+    static Logger log = LoggerFactory.getLogger(HelpCommand.class);
 
     private Map<CommandType, Command> commands;
     private String answer;
