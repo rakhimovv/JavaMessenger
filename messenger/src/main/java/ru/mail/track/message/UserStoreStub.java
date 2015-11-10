@@ -41,7 +41,8 @@ public class UserStoreStub implements UserStore {
 
     @Override
     public User addUser(User user) {
-        users.put(users.size() + 1L, user);
+        user.setId((long) users.size());
+        users.put((long) users.size(), user);
         return user;
     }
 

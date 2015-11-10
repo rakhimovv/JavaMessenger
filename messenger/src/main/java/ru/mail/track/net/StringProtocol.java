@@ -18,7 +18,7 @@ public class StringProtocol implements Protocol {
     @Override
     public Message decode(byte[] bytes) {
         String str = new String(bytes);
-        log.info("decoded: {}", str);
+        //log.info("decoded: {}", str);
         String[] tokens = str.split(DELIMITER);
         CommandType type = CommandType.valueOf(tokens[0]);
         switch (type) {
@@ -46,9 +46,9 @@ public class StringProtocol implements Protocol {
                 chatCreateMessage.setMessage(tokens[1]);
                 return chatCreateMessage;
             case USER_PASS:
-                LoginMessage userPassMessage = new LoginMessage();
+                SendMessage userPassMessage = new SendMessage();
                 userPassMessage.setType(CommandType.USER_PASS);
-                userPassMessage.setPass(tokens[1]);
+                userPassMessage.setMessage(tokens[1]);
                 return userPassMessage;
             case USER_INFO:
                 LoginMessage userInfoMessage = new LoginMessage();
@@ -95,8 +95,8 @@ public class StringProtocol implements Protocol {
                 builder.append(chatFindMessage.getMessage()).append(DELIMITER);
                 break;
             case USER_PASS:
-                LoginMessage userPassMessage = (LoginMessage) msg;
-                builder.append(userPassMessage.getPass()).append(DELIMITER);
+                SendMessage userPassMessage = (SendMessage) msg;
+                builder.append(userPassMessage.getMessage()).append(DELIMITER);
                 break;
             case USER_INFO:
                 LoginMessage userInfoMessage = (LoginMessage) msg;
@@ -117,7 +117,7 @@ public class StringProtocol implements Protocol {
             default:
                 throw new RuntimeException("Invalid type: " + type);
         }
-        log.info("encoded: {}", builder.toString());
+        //log.info("encoded: {}", builder.toString());
         return builder.toString().getBytes();
     }
 

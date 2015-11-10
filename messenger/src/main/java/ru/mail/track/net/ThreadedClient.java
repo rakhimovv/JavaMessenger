@@ -60,7 +60,7 @@ public class ThreadedClient implements MessageListener {
 
     public void processInput(String line) throws IOException {
         String[] tokens = line.split(" ");
-        log.info("Tokens: {}", Arrays.toString(tokens));
+        //log.info("Tokens: {}", Arrays.toString(tokens));
         String cmdType = tokens[0];
         switch (cmdType) {
             case "login":
@@ -117,16 +117,12 @@ public class ThreadedClient implements MessageListener {
                 }
                 break;
             case "user_pass":
-                LoginMessage userPassMessage = new LoginMessage();
+                SendMessage userPassMessage = new SendMessage();
                 userPassMessage.setType(CommandType.USER_PASS);
                 switch (tokens.length) {
                     case 3:
-                        if (tokens[1].equals(tokens[2])) {
-                            userPassMessage.setPass(tokens[1]);
-                            handler.send(userPassMessage);
-                        } else {
-                            System.out.println("Passwords mismatch.");
-                        }
+                        userPassMessage.setMessage(tokens[1] + ">" + tokens[2]);
+                        handler.send(userPassMessage);
                         break;
                     default:
                         System.out.println("Wrong amount of arguments. Try <help>");

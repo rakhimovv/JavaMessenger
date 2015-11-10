@@ -71,7 +71,8 @@ public class SocketConnectionHandler implements ConnectionHandler {
                 int read = in.read(buf);
                 if (read > 0) {
                     Message msg = protocol.decode(Arrays.copyOf(buf, read));
-                    log.info("message received: {}", msg);
+                    //log.info("message received: {}", msg);
+
                     // Уведомим всех подписчиков этого события
                     notifyListeners(session, msg);
                 }

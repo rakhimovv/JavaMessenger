@@ -14,17 +14,18 @@ public class UserInfoCommand implements Command {
     static Logger log = LoggerFactory.getLogger(UserInfoCommand.class);
 
     private UserStore userStore;
-    BaseCommandResult commandResult;
+    private BaseCommandResult commandResult;
 
     public UserInfoCommand(UserStore userStore) {
         this.userStore = userStore;
-        this.commandResult = new BaseCommandResult();
+        commandResult = new BaseCommandResult();
         commandResult.setStatus(CommandResult.Status.OK);
     }
 
 
     @Override
     public BaseCommandResult execute(Session session, Message msg) {
+        // TODO почему-то с каждым вызовом команды ее вывод накапливается, разобраться с этим
         LoginMessage userInfoMsg = (LoginMessage) msg;
         switch (userInfoMsg.getArgType()) {
             case SELF_INFO:

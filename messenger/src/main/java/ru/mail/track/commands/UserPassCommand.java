@@ -22,13 +22,17 @@ public class UserPassCommand implements Command {
 
     @Override
     public BaseCommandResult execute(Session session, Message msg) {
-        LoginMessage userPassMsg = (LoginMessage) msg;
-        User user;
-        // TODO неправильная логика команды и странный вывод при вызове user_info
-        if ((user = session.getSessionUser()) != null) {
-            user.setPass(userPassMsg.getPass());
-            commandResult.setResponse("The password changed.");
-            log.info("Success set_pass: {}", user);
+        SendMessage userPassMsg = (SendMessage) msg;
+        if (session.getSessionUser() != null) {
+            String[] args = userPassMsg.getMessage().split(">");
+            if (session.getSessionUser().getPass().equals(args[0])) {
+                session.getSessionUser().setPass(args[1]);
+                commandResult.setResponse("The password changed.");
+                log.info("Success set_pass: {}", session.getSessionUser());
+            } else {
+                commandResult.setResponse("Wrong old password.");
+                log.info("set_pass: Wrong old password.");
+            }
         } else {
             commandResult.setStatus(CommandResult.Status.NOT_LOGGINED);
             log.info("User isn't logged in.");

@@ -27,7 +27,6 @@ public class ChatFindCommand implements Command {
     public BaseCommandResult execute(Session session, Message msg) {
         SendMessage chatFindMsg = (SendMessage) msg;
         if (session.getSessionUser() != null) {
-            // TODO: поменять принимаемый формат и перенести логику
             String[] args = chatFindMsg.getMessage().split(">");
             Long chatId = Long.parseLong(args[0]);
             Chat chat = messageStore.getChatById(chatId);
