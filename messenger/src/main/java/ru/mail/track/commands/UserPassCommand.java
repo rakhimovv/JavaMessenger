@@ -4,45 +4,36 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.mail.track.message.*;
-import ru.mail.track.net.SessionManager;
 import ru.mail.track.session.Session;
 
-import java.io.IOException;
-
 /**
- * Выполняем авторизацию по этой команде
+ * Поменять пароль
  */
 public class UserPassCommand implements Command {
 
     static Logger log = LoggerFactory.getLogger(UserPassCommand.class);
 
-    private UserStore userStore;
-    private SessionManager sessionManager;
-    private String answer;
+    private BaseCommandResult commandResult;
 
+    public UserPassCommand() {
+        commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
+    }
 
     @Override
-    public void execute(Session session, Message msg) {
+    public BaseCommandResult execute(Session session, Message msg) {
         LoginMessage userPassMsg = (LoginMessage) msg;
         User user;
+        // TODO неправильная логика команды и странный вывод при вызове user_info
         if ((user = session.getSessionUser()) != null) {
             user.setPass(userPassMsg.getPass());
-            answer = "The password changed.";
+            commandResult.setResponse("The password changed.");
             log.info("Success set_pass: {}", user);
         } else {
-            answer = "You are not logged in.";
+            commandResult.setStatus(CommandResult.Status.NOT_LOGGINED);
             log.info("User isn't logged in.");
         }
 
-        try {
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setType(CommandType.MSG_SEND);
-            sendMessage.setChatId(0L);
-            sendMessage.setMessage(answer + "\n");
-            session.getConnectionHandler().send(sendMessage);
-            answer = "";
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return commandResult;
     }
 }

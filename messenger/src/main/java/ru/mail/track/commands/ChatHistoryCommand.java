@@ -10,50 +10,43 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Выполняем авторизацию по этой команде
+ * Вывести историю сообщений чата
  */
 public class ChatHistoryCommand implements Command {
 
     static Logger log = LoggerFactory.getLogger(ChatListCommand.class);
 
     private MessageStore messageStore;
-    private String answer;
+    private BaseCommandResult commandResult;
 
     public ChatHistoryCommand(MessageStore messageStore) {
         this.messageStore = messageStore;
+        commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
     }
 
 
     @Override
-    public void execute(Session session, Message msg) {
+    public BaseCommandResult execute(Session session, Message msg) {
         SendMessage chatHistoryMsg = (SendMessage) msg;
         if (session.getSessionUser() != null) {
             Long chatId = Long.parseLong(chatHistoryMsg.getMessage());
             Chat chat = messageStore.getChatById(chatId);
             if (chat == null) {
-                answer = "This chat doesn't exist.";
+                commandResult.setResponse("This chat doesn't exist.");
             } else {
                 List<Long> messages = messageStore.getMessagesFromChat(chatId);
                 for (Long id : messages) {
                     SendMessage chatMessage = (SendMessage) messageStore.getMessageById(id);
-                    answer += chatMessage.getMessage() + "\n";
+                    commandResult.appendNewLine(chatMessage.getMessage());
                 }
                 log.info("Success chat_history: {}", chat);
             }
         } else {
-            answer = "You are not logged in.";
+            commandResult.setStatus(CommandResult.Status.NOT_LOGGINED);
             log.info("User isn't logged in.");
         }
 
-        try {
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setType(CommandType.MSG_SEND);
-            sendMessage.setChatId(0L);
-            sendMessage.setMessage(answer + "\n");
-            session.getConnectionHandler().send(sendMessage);
-            answer = "";
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return commandResult;
     }
 }

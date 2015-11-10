@@ -7,11 +7,14 @@ import ru.mail.track.commands.CommandType;
  */
 public class LoginMessage extends Message {
 
-    public final int LOGIN = 1;
-    public final int CREAT_USER = 2;
-    public final int SELF_INFO = 3;
-    public final int ID_INFO = 4;
-    private int argType;
+    public enum ArgType {
+        LOGIN,
+        CREAT_USER,
+        SELF_INFO,
+        ID_INFO,
+    }
+
+    private ArgType argType;
     private String login;
     private String pass;
     private Long id;
@@ -36,11 +39,11 @@ public class LoginMessage extends Message {
         this.pass = pass;
     }
 
-    public int getArgType() {
+    public ArgType getArgType() {
         return argType;
     }
 
-    public void setArgType(int argType) {
+    public void setArgType(ArgType argType) {
         this.argType = argType;
     }
 

@@ -53,12 +53,12 @@ public class StringProtocol implements Protocol {
             case USER_INFO:
                 LoginMessage userInfoMessage = new LoginMessage();
                 userInfoMessage.setType(CommandType.USER_INFO);
-                userInfoMessage.setArgType(Integer.parseInt(tokens[1]));
+                userInfoMessage.setArgType(LoginMessage.ArgType.valueOf(tokens[1]));
                 userInfoMessage.setUserId(Long.parseLong(tokens[2]));
                 return userInfoMessage;
             case USER_LOGIN:
                 LoginMessage loginMessage = new LoginMessage();
-                loginMessage.setArgType(Integer.parseInt(tokens[1]));
+                loginMessage.setArgType(LoginMessage.ArgType.valueOf(tokens[1]));
                 loginMessage.setLogin(tokens[2]);
                 loginMessage.setPass(tokens[3]);
                 return loginMessage;

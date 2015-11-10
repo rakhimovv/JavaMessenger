@@ -8,6 +8,7 @@ public abstract class CommandResult {
         OK,
         FAILED,
         NOT_LOGGINED,
+
     }
 
     private Status status;

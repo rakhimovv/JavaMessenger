@@ -68,13 +68,13 @@ public class ThreadedClient implements MessageListener {
                 loginMessage.setType(CommandType.USER_LOGIN);
                 switch (tokens.length) {
                     case 3:
-                        loginMessage.setArgType(loginMessage.LOGIN);
+                        loginMessage.setArgType(LoginMessage.ArgType.LOGIN);
                         loginMessage.setLogin(tokens[1]);
                         loginMessage.setPass(tokens[2]);
                         handler.send(loginMessage);
                         break;
                     case 1:
-                        loginMessage.setArgType(loginMessage.CREAT_USER);
+                        loginMessage.setArgType(LoginMessage.ArgType.CREAT_USER);
                         System.out.println("Write your new login and password:");
                         Scanner scanner = new Scanner(System.in);
                         String[] args = scanner.nextLine().split(" ");
@@ -103,12 +103,12 @@ public class ThreadedClient implements MessageListener {
                 userInfoMessage.setType(CommandType.USER_INFO);
                 switch (tokens.length) {
                     case 1:
-                        userInfoMessage.setArgType(userInfoMessage.SELF_INFO);
+                        userInfoMessage.setArgType(LoginMessage.ArgType.SELF_INFO);
                         userInfoMessage.setUserId(0L);
                         handler.send(userInfoMessage);
                         break;
                     case 2:
-                        userInfoMessage.setArgType(userInfoMessage.ID_INFO);
+                        userInfoMessage.setArgType(LoginMessage.ArgType.ID_INFO);
                         userInfoMessage.setUserId(Long.parseLong(tokens[1]));
                         handler.send(userInfoMessage);
                         break;

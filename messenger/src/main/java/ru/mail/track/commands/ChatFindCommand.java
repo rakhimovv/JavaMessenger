@@ -6,26 +6,25 @@ import org.slf4j.LoggerFactory;
 import ru.mail.track.message.*;
 import ru.mail.track.session.Session;
 
-import java.io.IOException;
-import java.util.List;
-
 /**
- * Выполняем авторизацию по этой команде
+ * Найти подстроку в чате
  */
 public class ChatFindCommand implements Command {
 
     static Logger log = LoggerFactory.getLogger(ChatListCommand.class);
 
     private MessageStore messageStore;
-    private String answer;
+    private BaseCommandResult commandResult;
 
     public ChatFindCommand(MessageStore messageStore) {
         this.messageStore = messageStore;
+        commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
     }
 
 
     @Override
-    public void execute(Session session, Message msg) {
+    public BaseCommandResult execute(Session session, Message msg) {
         SendMessage chatFindMsg = (SendMessage) msg;
         if (session.getSessionUser() != null) {
             // TODO: поменять принимаемый формат и перенести логику
@@ -36,28 +35,18 @@ public class ChatFindCommand implements Command {
             for (long msgId : chat.getMessageIds()) {
                 SendMessage chatMsg = (SendMessage) messageStore.getMessageById(msgId);
                 if (chatMsg.getMessage().contains(args[1])) {
-                    answer += chatMsg.getMessage();
-                    break;
+                    commandResult.appendNewLine(chatMsg.getMessage());
                 }
             }
-            if (answer.isEmpty()) {
-                answer = "Cant' find any message.";
+            if (commandResult.getResponse().isEmpty()) {
+                commandResult.setResponse("Cant' find any message.");
             }
             log.info("Success chat_find: {}", chat);
         } else {
-            answer = "You are not logged in.";
+            commandResult.setStatus(CommandResult.Status.NOT_LOGGINED);
             log.info("User isn't logged in.");
         }
 
-        try {
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setType(CommandType.MSG_SEND);
-            sendMessage.setChatId(0L);
-            sendMessage.setMessage(answer + "\n");
-            session.getConnectionHandler().send(sendMessage);
-            answer = "";
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return commandResult;
     }
 }

@@ -6,10 +6,8 @@ import org.slf4j.LoggerFactory;
 import ru.mail.track.message.*;
 import ru.mail.track.session.Session;
 
-import java.io.IOException;
-
 /**
- * Выполняем авторизацию по этой команде
+ * Выполняем информацию о пользователе
  */
 public class UserInfoCommand implements Command {
 
@@ -17,47 +15,44 @@ public class UserInfoCommand implements Command {
 
     private UserStore userStore;
     private String answer;
+    BaseCommandResult commandResult;
 
     public UserInfoCommand(UserStore userStore) {
         this.userStore = userStore;
+        this.commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
     }
 
 
     @Override
-    public void execute(Session session, Message msg) {
+    public BaseCommandResult execute(Session session, Message msg) {
         LoginMessage userInfoMsg = (LoginMessage) msg;
-        if (userInfoMsg.getArgType() == userInfoMsg.SELF_INFO) {
-            if (session.getSessionUser() != null) {
-                answer += "login: " + session.getSessionUser().getName() + "\n";
-                answer += "password: " + session.getSessionUser().getPass() + "\n";
-                log.info("Success self_info: {}", session.getSessionUser());
-            } else {
-                answer = "You are not logged in.";
-                log.info("User isn't logged in.");
-            }
-        } else if (userInfoMsg.getArgType() == userInfoMsg.ID_INFO) {
-            User user = userStore.getUserById(userInfoMsg.getUserId());
-            if (user != null) {
-                answer += "login: " + user.getName() + "\n";
-                answer += "password: " + user.getPass() + "\n";
-                log.info("Success id_info: {}", userStore.getUserById(userInfoMsg.getUserId()));
-            } else {
-                log.info("Wrong userId: {}", userInfoMsg.getUserId());
-                answer = "Wrong user id.";
-            }
-        } else {
-            log.info("Wrong argType: {}", userInfoMsg.getArgType());
+        switch (userInfoMsg.getArgType()) {
+            case SELF_INFO:
+                if (session.getSessionUser() != null) {
+                    commandResult.appendNewLine("login: " + session.getSessionUser().getName());
+                    commandResult.appendNewLine("password: " + session.getSessionUser().getPass());
+                    log.info("Success self_info: {}", session.getSessionUser());
+                } else {
+                    commandResult.setStatus(CommandResult.Status.NOT_LOGGINED);
+                    log.info("User isn't logged in.");
+                }
+                break;
+            case ID_INFO:
+                User user = userStore.getUserById(userInfoMsg.getUserId());
+                if (user != null) {
+                    commandResult.appendNewLine("login: " + user.getName());
+                    commandResult.appendNewLine("password: " + user.getPass());
+                    log.info("Success id_info: {}", userStore.getUserById(userInfoMsg.getUserId()));
+                } else {
+                    log.info("Wrong userId: {}", userInfoMsg.getUserId());
+                    commandResult.setResponse("Wrong user id.");
+                }
+                break;
+            default:
+                log.info("Wrong argType: {}", userInfoMsg.getArgType());
         }
 
-        try {
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setType(CommandType.MSG_SEND);
-            sendMessage.setChatId(0L);
-            sendMessage.setMessage(answer + "\n");
-            session.getConnectionHandler().send(sendMessage);
-            answer = "";
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return commandResult;
     }
 }

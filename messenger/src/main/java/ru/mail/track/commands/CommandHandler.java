@@ -1,11 +1,13 @@
 package ru.mail.track.commands;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.mail.track.message.Message;
+import ru.mail.track.message.SendMessage;
 import ru.mail.track.net.MessageListener;
 import ru.mail.track.session.Session;
 
@@ -26,7 +28,27 @@ public class CommandHandler implements MessageListener {
     public void onMessage(Session session, Message message) {
         Command cmd = commands.get(message.getType());
         log.info("onMessage: {} type {}", message, message.getType());
-        // TODO: заставить execute возвращать CommandResult и уже здесь его обработать
-        cmd.execute(session, message);
+        BaseCommandResult commandResult = cmd.execute(session, message);
+
+        switch (commandResult.getStatus()) {
+            case OK:
+                break;
+            case NOT_LOGGINED:
+                commandResult.setResponse("You must log in.");
+                break;
+            case FAILED:
+                break;
+            default:
+        }
+
+        try {
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setType(CommandType.MSG_SEND);
+            sendMessage.setChatId(0L);
+            sendMessage.setMessage("\n\n" + commandResult.getResponse() + "\n\n");
+            session.getConnectionHandler().send(sendMessage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

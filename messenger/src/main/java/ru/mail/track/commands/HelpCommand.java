@@ -1,11 +1,10 @@
 package ru.mail.track.commands;
 
-import java.io.IOException;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.mail.track.message.SendMessage;
+
 import ru.mail.track.message.Message;
 import ru.mail.track.session.Session;
 
@@ -18,31 +17,26 @@ public class HelpCommand implements Command {
 
     private Map<CommandType, Command> commands;
     private String answer;
+    private BaseCommandResult commandResult;
 
     public HelpCommand(Map<CommandType, Command> commands) {
         this.commands = commands;
+        commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
     }
 
 
     @Override
-    public void execute(Session session, Message msg) {
+    public BaseCommandResult execute(Session session, Message msg) {
         /**
          * В простом случае просто выводим данные на консоль
          * Если будем работать через сеть, то команде придется передать также объект для работы с сетью
          */
 
         for (Map.Entry<CommandType, Command> entry : commands.entrySet()) {
-            answer += entry.getKey() + "\n";
+            commandResult.appendNewLine(entry.getKey().toString());
         }
 
-        try {
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setType(CommandType.MSG_SEND);
-            sendMessage.setChatId(0L);
-            sendMessage.setMessage(answer);
-            session.getConnectionHandler().send(sendMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return commandResult;
     }
 }
