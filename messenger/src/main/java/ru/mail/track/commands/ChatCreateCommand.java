@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import ru.mail.track.message.*;
 import ru.mail.track.session.Session;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Создать новый чат
  */
@@ -29,29 +32,27 @@ public class ChatCreateCommand implements Command {
     public BaseCommandResult execute(Session session, Message msg) {
         SendMessage chatCreateMsg = (SendMessage) msg;
         if (session.getSessionUser() != null) {
-            // TODO: перенести данную логику в MessageStore и исключить двойное попадения себя в чат, если юезр ошибся
-            Chat chat = new Chat();
-            chat.addParticipant(session.getSessionUser().getId());
-
+            List<Long> participants = new ArrayList<>();
             boolean success = true;
+
+            participants.add(session.getSessionUser().getId());
             for (String arg : chatCreateMsg.getMessage().split(",")) {
                 Long id = Long.parseLong(arg);
-                if (userStore.getUserById(id) == null) {
-                    // TODO: вернуть список несуществующих пользователей, а не только одного
-                    commandResult.setResponse("User " + id + " doesn't exist.");
+                User user = userStore.getUserById(id);
+                if (user == null) {
+                    commandResult.appendNewLine("User " + id + " doesn't exist.");
                     success = false;
-                    break;
-                } else {
-                    chat.addParticipant(id);
+                } else if (!user.equals(session.getSessionUser())) {
+                    // Защита от дурака, т.е. если среди id будет id пользователя
+                    participants.add(id);
                 }
             }
 
             if (success) {
-                messageStore.addChat(chat);
+                Chat chat = messageStore.addChat(participants);
                 commandResult.setResponse("The chat was created");
                 log.info("Success chat_create: {}", chat);
             }
-
         } else {
             commandResult.setStatus(CommandResult.Status.NOT_LOGGINED);
             log.info("User isn't logged in.");
