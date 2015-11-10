@@ -17,25 +17,17 @@ public class AuthorizationService {
     }
 
     public User login(String name, String password) {
-        if (userStore.isUserExist(name)) {
-            User user = userStore.getUser(name, password);
-            if (user != null) {
-                return user;
-            } else {
-                log.info("login: Wrong password.");
-            }
-        }
-        log.info("login: The user with this name doesn't exist.");
-        return null;
+        return userStore.getUser(name, password);
     }
 
     public User creatUser(String name, String password) {
-        if (userStore.isUserExist(name) == false) {
-            User user = new User(name, password);
-            userStore.addUser(user);
-            return user;
+        if (!userStore.isUserExist(name)) {
+            return userStore.addUser(new User(name, password));
         }
-        log.info("creatUser: The user with this name has already existed.");
         return null;
+    }
+
+    public UserStore getUserStore() {
+        return userStore;
     }
 }

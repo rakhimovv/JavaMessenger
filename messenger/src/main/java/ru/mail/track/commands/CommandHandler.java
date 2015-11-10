@@ -41,6 +41,7 @@ public class CommandHandler implements MessageListener {
             default:
         }
 
+        // Отправить текстовый результат выполнения команды
         try {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setType(CommandType.MSG_SEND);

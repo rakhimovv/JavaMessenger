@@ -14,7 +14,6 @@ public class UserInfoCommand implements Command {
     static Logger log = LoggerFactory.getLogger(UserInfoCommand.class);
 
     private UserStore userStore;
-    private String answer;
     BaseCommandResult commandResult;
 
     public UserInfoCommand(UserStore userStore) {

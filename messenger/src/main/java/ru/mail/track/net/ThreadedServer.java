@@ -54,8 +54,7 @@ public class ThreadedServer {
         AuthorizationService authService = new AuthorizationService(userStore);
 
         Map<CommandType, Command> cmds = new HashMap<>();
-        //cmds.put(CommandType.USER_LOGIN, new LoginCommand(authService, sessionManager));
-        cmds.put(CommandType.USER_LOGIN, new LoginCommand(userStore, sessionManager));
+        cmds.put(CommandType.USER_LOGIN, new LoginCommand(authService, sessionManager));
         cmds.put(CommandType.USER_INFO, new UserInfoCommand(userStore));
         cmds.put(CommandType.USER_PASS, new UserPassCommand());
         cmds.put(CommandType.CHAT_LIST, new ChatListCommand(messageStore));
