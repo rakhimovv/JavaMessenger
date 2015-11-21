@@ -2,7 +2,7 @@ package ru.mail.track.net;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.mail.track.comands.*;
+import ru.mail.track.commands.*;
 import ru.mail.track.message.MessageStore;
 import ru.mail.track.message.MessageStoreStub;
 import ru.mail.track.message.UserStore;
@@ -10,6 +10,7 @@ import ru.mail.track.message.UserStoreStub;
 import ru.mail.track.serialization.Protocol;
 import ru.mail.track.serialization.JsonProtocol;
 import ru.mail.track.serialization.SerializationProtocol;
+import ru.mail.track.AuthorizationService;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -54,9 +55,16 @@ public class ThreadedServer {
 
         UserStore userStore = new UserStoreStub();
         MessageStore messageStore = new MessageStoreStub();
+        AuthorizationService authService = new AuthorizationService(userStore);
 
         Map<CommandType, Command> cmds = new HashMap<>();
-        cmds.put(CommandType.USER_LOGIN, new LoginCommand(userStore, sessionManager));
+        cmds.put(CommandType.USER_LOGIN, new LoginCommand(authService, sessionManager));
+        cmds.put(CommandType.USER_INFO, new UserInfoCommand(userStore));
+        cmds.put(CommandType.USER_PASS, new UserPassCommand());
+        cmds.put(CommandType.CHAT_LIST, new ChatListCommand(messageStore));
+        cmds.put(CommandType.CHAT_HISTORY, new ChatHistoryCommand(messageStore));
+        cmds.put(CommandType.CHAT_FIND, new ChatFindCommand(messageStore));
+        cmds.put(CommandType.CHAT_CREATE, new ChatCreateCommand(userStore, messageStore));
         cmds.put(CommandType.MSG_SEND, new SendCommand(sessionManager, messageStore));
         cmds.put(CommandType.USER_HELP, new HelpCommand(cmds));
         CommandHandler handler = new CommandHandler(cmds);

@@ -38,5 +38,10 @@ public interface MessageStore {
      */
     void addUserToChat(Long userId, Long chatId);
 
+    /**
+     * Создать чат
+     */
+    Chat addChat(Chat chat);
 
+    Chat addChat(List<Long> users);
 }

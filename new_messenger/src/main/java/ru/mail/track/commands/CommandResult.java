@@ -1,4 +1,4 @@
-package ru.mail.track.comands;
+package ru.mail.track.commands;
 
 /**
  *
@@ -8,6 +8,7 @@ public abstract class CommandResult {
         OK,
         FAILED,
         NOT_LOGGINED,
+
     }
 
     private Status status;

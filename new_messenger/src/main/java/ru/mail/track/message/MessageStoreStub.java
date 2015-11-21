@@ -49,7 +49,16 @@ public class MessageStoreStub implements MessageStore {
 
     @Override
     public List<Long> getChatsByUserId(Long userId) {
-        return null;
+        List<Long> chatIds = new ArrayList<>();
+
+        for (Map.Entry<Long, Chat> entry : chats.entrySet()) {
+            for (Long ParticipantId : entry.getValue().getParticipantIds()) {
+                if (ParticipantId.equals(userId)) {
+                    chatIds.add(entry.getKey());
+                }
+            }
+        }
+        return chatIds;
     }
 
     @Override
@@ -77,5 +86,20 @@ public class MessageStoreStub implements MessageStore {
     @Override
     public void addUserToChat(Long userId, Long chatId) {
 
+    }
+
+    @Override
+    public Chat addChat(Chat chat) {
+        chats.put(chats.size() + 1L, chat);
+        return chat;
+    }
+
+    @Override
+    public Chat addChat(List<Long> users) {
+        Chat chat = new Chat();
+        for (Long id : users) {
+            chat.addParticipant(id);
+        }
+        return addChat(chat);
     }
 }

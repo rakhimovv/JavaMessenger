@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import ru.mail.track.AuthorizationService;
+import ru.mail.track.commands.LoginCommand;
 import ru.mail.track.message.LoginMessage;
 import ru.mail.track.message.User;
 import ru.mail.track.message.UserStore;
@@ -33,7 +35,8 @@ public class LoginCommandTest {
     @Test
     public void successLogin() throws Exception {
 
-        LoginCommand loginCommand = new LoginCommand(userStore, sessionManager);
+        AuthorizationService authService = new AuthorizationService(userStore);
+        LoginCommand loginCommand = new LoginCommand(authService, sessionManager);
         LoginMessage login = new LoginMessage();
         login.setSender(123L);
         login.setLogin("Jack");
@@ -47,7 +50,8 @@ public class LoginCommandTest {
     @Test
     public void badLogin() throws Exception {
 
-        LoginCommand loginCommand = new LoginCommand(userStore, sessionManager);
+        AuthorizationService authService = new AuthorizationService(userStore);
+        LoginCommand loginCommand = new LoginCommand(authService, sessionManager);
         LoginMessage login = new LoginMessage();
         login.setSender(123L);
         login.setLogin("Jack");

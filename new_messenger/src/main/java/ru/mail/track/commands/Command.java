@@ -1,4 +1,4 @@
-package ru.mail.track.comands;
+package ru.mail.track.commands;
 
 import ru.mail.track.message.Message;
 import ru.mail.track.session.Session;
@@ -20,6 +20,6 @@ public interface Command {
      *
      * В качестве пример оставлю void
      */
-    void execute(Session session, Message message);
+    BaseCommandResult execute(Session session, Message message);
 
 }

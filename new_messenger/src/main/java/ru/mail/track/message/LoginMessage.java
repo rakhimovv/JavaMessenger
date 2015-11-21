@@ -1,25 +1,35 @@
 package ru.mail.track.message;
 
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import ru.mail.track.comands.CommandType;
+import ru.mail.track.commands.CommandType;
 import ru.mail.track.generics.Box;
 
 /**
  *
  */
-@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include= JsonTypeInfo.As.PROPERTY, property="objectType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 public class LoginMessage extends Message {
+    public enum ArgType {
+        LOGIN,
+        CREAT_USER,
+        SELF_INFO,
+        ID_INFO,
+    }
 
+    @JsonProperty
+    private ArgType argType;
 
     @JsonProperty
     private String login;
 
     @JsonProperty
     private String pass;
+
+    @JsonProperty
+    private Long id;
 
     public LoginMessage() {
         setType(CommandType.USER_LOGIN);
@@ -41,6 +51,22 @@ public class LoginMessage extends Message {
         this.pass = pass;
     }
 
+    public ArgType getArgType() {
+        return argType;
+    }
+
+    public void setArgType(ArgType argType) {
+        this.argType = argType;
+    }
+
+    public Long getUserId() {
+        return id;
+    }
+
+    public void setUserId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "LoginMessage{" +
@@ -56,9 +82,10 @@ public class LoginMessage extends Message {
 
         LoginMessage that = (LoginMessage) o;
 
-        if (login != null ? !login.equals(that.login) : that.login != null) return false;
-        return !(pass != null ? !pass.equals(that.pass) : that.pass != null);
-
+        /*if (login != null ? !login.equals(that.login) : that.login != null) return false;
+        return !(pass != null ? !pass.equals(that.pass) : that.pass != null);*/
+        return (login != null ? !login.equals(that.login) : that.login != null) &&
+                !(pass != null ? !pass.equals(that.pass) : that.pass != null);
     }
 
     @Override

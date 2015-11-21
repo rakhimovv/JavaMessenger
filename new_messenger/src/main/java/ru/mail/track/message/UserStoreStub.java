@@ -30,9 +30,20 @@ public class UserStoreStub implements UserStore {
     }
 
     @Override
+    public boolean isUserExist(String login) {
+        for (User user : users.values()) {
+            if (user.getName().equals(login)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public User addUser(User user) {
-        User item = users.put(user.getId(), user);
-        return item;
+        user.setId((long) users.size());
+        users.put((long) users.size(), user);
+        return user;
     }
 
     @Override
@@ -47,6 +58,6 @@ public class UserStoreStub implements UserStore {
 
     @Override
     public User getUserById(Long id) {
-        return null;
+        return users.get(id);
     }
 }

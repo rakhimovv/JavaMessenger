@@ -6,7 +6,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import ru.mail.track.comands.CommandType;
+import ru.mail.track.commands.CommandType;
 import ru.mail.track.message.LoginMessage;
 import ru.mail.track.message.Message;
 import ru.mail.track.message.SendMessage;

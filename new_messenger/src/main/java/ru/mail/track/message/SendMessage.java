@@ -3,7 +3,7 @@ package ru.mail.track.message;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import ru.mail.track.comands.CommandType;
+import ru.mail.track.commands.CommandType;
 
 /**
  *

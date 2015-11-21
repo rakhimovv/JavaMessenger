@@ -1,7 +1,4 @@
-package ru.mail.track.comands;
-
-import java.io.IOException;
-import java.util.List;
+package ru.mail.track.commands;
 
 import ru.mail.track.message.Chat;
 import ru.mail.track.message.Message;
@@ -10,6 +7,9 @@ import ru.mail.track.message.SendMessage;
 import ru.mail.track.net.SessionManager;
 import ru.mail.track.session.Session;
 
+import java.io.IOException;
+import java.util.List;
+
 /**
  *
  */
@@ -17,14 +17,17 @@ public class SendCommand implements Command {
 
     private MessageStore messageStore;
     private SessionManager sessionManager;
+    private BaseCommandResult commandResult;
 
     public SendCommand(SessionManager sessionManager, MessageStore messageStore) {
         this.sessionManager = sessionManager;
         this.messageStore = messageStore;
+        commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
     }
 
     @Override
-    public void execute(Session session, Message message) {
+    public BaseCommandResult execute(Session session, Message message) {
 
         SendMessage sendMessage = (SendMessage) message;
         Chat chat = messageStore.getChatById(sendMessage.getChatId());
@@ -39,5 +42,7 @@ public class SendCommand implements Command {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return commandResult;
     }
 }

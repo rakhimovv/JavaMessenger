@@ -6,7 +6,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import ru.mail.track.comands.CommandType;
+import ru.mail.track.commands.CommandType;
 
 /**
  *
