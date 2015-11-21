@@ -45,8 +45,6 @@ public class SocketConnectionHandler implements ConnectionHandler {
             log.debug(msg.toString());
         }
 
-        // TODO: здесь должен быть встроен алгоритм кодирования/декодирования сообщений
-        // то есть требуется описать протокол
         out.write(protocol.encode(msg));
         out.flush();
     }

@@ -65,7 +65,6 @@ public class ThreadedServer {
         cmds.put(CommandType.USER_HELP, new HelpCommand(cmds));
         CommandHandler handler = new CommandHandler(cmds);
 
-
         ThreadedServer server = new ThreadedServer(protocol, sessionManager, handler);
 
         try {

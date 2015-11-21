@@ -1,29 +1,53 @@
 package ru.mail.track.net;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import ru.mail.track.commands.CommandType;
+import ru.mail.track.message.SendMessage;
+
 import static org.junit.Assert.*;
 
 /**
- * Created by retina on 10/11/15.
+ *
  */
+
 public class StringProtocolTest {
 
-    @org.junit.Before
+    SendMessage msg;
+    StringProtocol protocol;
+
+    @Before
     public void setUp() throws Exception {
-
+        msg = new SendMessage();
+        protocol = new StringProtocol();
     }
 
-    @org.junit.After
+    @After
     public void tearDown() throws Exception {
-
     }
 
-    @org.junit.Test
+    @Test
     public void testDecode() throws Exception {
+        System.out.println("testDecode");
+        msg.setType(CommandType.CHAT_HISTORY);
+        msg.setMessage("HELLO/HI/GOOD_BUY");
 
+        String encodeMsg = "CHAT_HISTORY;HELLO/HI/GOOD_BUY;";
+        String str = new String(protocol.encode(msg));
+
+        assertEquals(encodeMsg, str);
     }
 
-    @org.junit.Test
+    @Test
     public void testEncode() throws Exception {
+        System.out.println("testEncode");
+        msg.setType(CommandType.CHAT_HISTORY);
+        msg.setMessage("HELLO/HI/GOOD_BUY");
 
+        String encodeMsg = "CHAT_HISTORY;HELLO/HI/GOOD_BUY;";
+        SendMessage sendMessage = (SendMessage) protocol.decode(encodeMsg.getBytes());
+
+        assertEquals(msg, sendMessage);
     }
 }
