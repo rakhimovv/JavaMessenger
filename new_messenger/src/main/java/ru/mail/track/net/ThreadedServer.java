@@ -9,6 +9,7 @@ import ru.mail.track.message.UserStore;
 import ru.mail.track.message.UserStoreStub;
 import ru.mail.track.serialization.Protocol;
 import ru.mail.track.serialization.JsonProtocol;
+import ru.mail.track.serialization.SerializationProtocol;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -47,7 +48,8 @@ public class ThreadedServer {
     }
 
     public static void main(String[] args) {
-        Protocol protocol = new JsonProtocol();//new StringProtocol();
+        Protocol protocol = new SerializationProtocol();
+        //new JsonProtocol();//new StringProtocol();
         SessionManager sessionManager = new SessionManager();
 
         UserStore userStore = new UserStoreStub();

@@ -8,6 +8,7 @@ import ru.mail.track.message.Message;
 import ru.mail.track.message.SendMessage;
 import ru.mail.track.reflection.di.Auto;
 import ru.mail.track.serialization.JsonProtocol;
+import ru.mail.track.serialization.SerializationProtocol;
 import ru.mail.track.serialization.Protocol;
 import ru.mail.track.session.Session;
 
@@ -30,9 +31,11 @@ public class ThreadedClient implements MessageListener {
     ConnectionHandler handler;
 
     @Auto(isRequired = true)
-    private Protocol protocol = new JsonProtocol();
+    private Protocol protocol = new SerializationProtocol();
+    //new JsonProtocol();
 
     public ThreadedClient() {
+        init();
     }
 
     @PostConstruct
@@ -56,7 +59,6 @@ public class ThreadedClient implements MessageListener {
 
     public static void main(String[] args) throws Exception {
         ThreadedClient client = new ThreadedClient();
-
         Scanner scanner = new Scanner(System.in);
         System.out.println("$");
         while (true) {
