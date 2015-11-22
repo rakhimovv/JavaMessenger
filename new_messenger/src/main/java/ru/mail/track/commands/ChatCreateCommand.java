@@ -47,7 +47,7 @@ public class ChatCreateCommand implements Command {
             }
 
             if (success) {
-                Chat chat = messageStore.addChat(participants);
+                Chat chat = messageStore.createChat(participants);
                 commandResult.setResponse("The chat was created");
                 log.info("Success chat_create: {}", chat);
             }
