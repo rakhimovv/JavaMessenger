@@ -102,7 +102,8 @@ public class MessageStoreStub implements MessageStore {
     @Override
     public Chat createChat(List<Long> users) {
         Chat chat = new Chat();
-        chats.put(chats.size() + 1L, chat);
+        chat.setId(chats.size() + 1L);
+        chats.put(chat.getId(), chat);
         for (Long id : users) {
             addUserToChat(id, chat.getId());
         }
