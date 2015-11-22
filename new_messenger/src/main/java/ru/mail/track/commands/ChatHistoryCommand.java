@@ -18,17 +18,16 @@ public class ChatHistoryCommand implements Command {
     static Logger log = LoggerFactory.getLogger(ChatListCommand.class);
 
     private MessageStore messageStore;
-    private BaseCommandResult commandResult;
 
     public ChatHistoryCommand(MessageStore messageStore) {
         this.messageStore = messageStore;
-        commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
     }
 
 
     @Override
     public BaseCommandResult execute(Session session, Message msg) {
+        BaseCommandResult commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
         SendMessage chatHistoryMsg = (SendMessage) msg;
         if (session.getSessionUser() != null) {
             Long chatId = Long.parseLong(chatHistoryMsg.getMessage());
@@ -36,12 +35,13 @@ public class ChatHistoryCommand implements Command {
             if (chat == null) {
                 commandResult.setResponse("This chat doesn't exist.");
             } else {
+                commandResult.setResponse("");
                 List<Long> messages = messageStore.getMessagesFromChat(chatId);
                 for (Long id : messages) {
                     SendMessage chatMessage = (SendMessage) messageStore.getMessageById(id);
                     commandResult.appendNewLine(chatMessage.getMessage());
                 }
-                log.info("Success chat_history: {}", chat);
+                log.info("Success chat_history: {}", commandResult.getResponse());
             }
         } else {
             commandResult.setStatus(CommandResult.Status.NOT_LOGGINED);

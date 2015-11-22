@@ -17,17 +17,17 @@ public class ChatListCommand implements Command {
     static Logger log = LoggerFactory.getLogger(ChatListCommand.class);
 
     private MessageStore messageStore;
-    private BaseCommandResult commandResult;
 
     public ChatListCommand(MessageStore messageStore) {
         this.messageStore = messageStore;
-        commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
     }
 
 
     @Override
     public BaseCommandResult execute(Session session, Message msg) {
+        BaseCommandResult commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
+
         SendMessage chatListMsg = (SendMessage) msg;
         if (session.getSessionUser() != null) {
             List<Long> chatIds = messageStore.getChatsByUserId(session.getSessionUser().getId());

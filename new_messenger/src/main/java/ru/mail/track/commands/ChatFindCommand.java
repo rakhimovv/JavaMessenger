@@ -16,18 +16,19 @@ public class ChatFindCommand implements Command {
     static Logger log = LoggerFactory.getLogger(ChatListCommand.class);
 
     private MessageStore messageStore;
-    private BaseCommandResult commandResult;
 
     public ChatFindCommand(MessageStore messageStore) {
         this.messageStore = messageStore;
-        commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
     }
 
 
     @Override
     public BaseCommandResult execute(Session session, Message msg) {
         SendMessage chatFindMsg = (SendMessage) msg;
+
+        BaseCommandResult commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
+
         if (session.getSessionUser() != null) {
             String[] args = chatFindMsg.getMessage().split(">");
             Long chatId = Long.parseLong(args[0]);

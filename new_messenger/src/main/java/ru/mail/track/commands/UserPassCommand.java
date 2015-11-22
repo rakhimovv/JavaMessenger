@@ -13,15 +13,11 @@ public class UserPassCommand implements Command {
 
     static Logger log = LoggerFactory.getLogger(UserPassCommand.class);
 
-    private BaseCommandResult commandResult;
-
-    public UserPassCommand() {
-        commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
-    }
-
     @Override
     public BaseCommandResult execute(Session session, Message msg) {
+        BaseCommandResult commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
+
         SendMessage userPassMsg = (SendMessage) msg;
         if (session.getSessionUser() != null) {
             String[] args = userPassMsg.getMessage().split(">");

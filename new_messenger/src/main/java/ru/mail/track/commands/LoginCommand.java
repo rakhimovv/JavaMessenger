@@ -18,18 +18,17 @@ public class LoginCommand implements Command {
 
     private AuthorizationService authService;
     private SessionManager sessionManager;
-    BaseCommandResult commandResult;
 
     public LoginCommand(AuthorizationService authService, SessionManager sessionManager) {
         this.authService = authService;
         this.sessionManager = sessionManager;
-        commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
     }
 
 
     @Override
     public BaseCommandResult execute(Session session, Message msg) {
+        BaseCommandResult commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
 
         LoginMessage loginMsg = (LoginMessage) msg;
         String name = loginMsg.getLogin();

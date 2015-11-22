@@ -96,6 +96,7 @@ public class ThreadedClient implements MessageListener {
                         break;
                     default:
                         System.out.println("Wrong amount of arguments. Try <help>");
+                        break;
                 }
                 break;
             case "send":
@@ -126,6 +127,7 @@ public class ThreadedClient implements MessageListener {
                         break;
                     default:
                         System.out.println("Wrong amount of arguments. Try <help>");
+                        break;
                 }
                 break;
             case "user_pass":
@@ -138,6 +140,7 @@ public class ThreadedClient implements MessageListener {
                         break;
                     default:
                         System.out.println("Wrong amount of arguments. Try <help>");
+                        break;
                 }
                 break;
             case "chat_list":
@@ -155,6 +158,7 @@ public class ThreadedClient implements MessageListener {
                         break;
                     default:
                         System.out.println("Wrong amount of arguments. Try <help>");
+                        break;
                 }
                 break;
             case "chat_history":
@@ -167,6 +171,7 @@ public class ThreadedClient implements MessageListener {
                         break;
                     default:
                         System.out.println("Wrong amount of arguments. Try <help>");
+                        break;
                 }
                 break;
             case "chat_find":
@@ -179,9 +184,12 @@ public class ThreadedClient implements MessageListener {
                         break;
                     default:
                         System.out.println("Wrong amount of arguments. Try <help>");
+                        break;
                 }
+                break;
             default:
                 System.out.println("Invalid input: " + line);
+                break;
         }
 
 

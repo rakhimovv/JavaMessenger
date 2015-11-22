@@ -16,17 +16,17 @@ public class UserInfoCommand implements Command {
     static Logger log = LoggerFactory.getLogger(UserInfoCommand.class);
 
     private UserStore userStore;
-    private BaseCommandResult commandResult;
 
     public UserInfoCommand(UserStore userStore) {
         this.userStore = userStore;
-        commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
     }
 
 
     @Override
     public BaseCommandResult execute(Session session, Message msg) {
+        BaseCommandResult commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
+
         LoginMessage userInfoMsg = (LoginMessage) msg;
         switch (userInfoMsg.getArgType()) {
             case SELF_INFO:

@@ -17,20 +17,21 @@ public class SendCommand implements Command {
 
     private MessageStore messageStore;
     private SessionManager sessionManager;
-    private BaseCommandResult commandResult;
 
     public SendCommand(SessionManager sessionManager, MessageStore messageStore) {
         this.sessionManager = sessionManager;
         this.messageStore = messageStore;
-        commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
     }
 
     @Override
     public BaseCommandResult execute(Session session, Message message) {
+        BaseCommandResult commandResult = new BaseCommandResult();
+        commandResult.setStatus(CommandResult.Status.OK);
 
         SendMessage sendMessage = (SendMessage) message;
         Chat chat = messageStore.getChatById(sendMessage.getChatId());
+        messageStore.addMessage(sendMessage.getChatId(), sendMessage);
+
         List<Long> parts = chat.getParticipantIds();
         try {
             for (Long userId : parts) {
