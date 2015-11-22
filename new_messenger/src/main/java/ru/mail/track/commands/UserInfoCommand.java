@@ -27,12 +27,11 @@ public class UserInfoCommand implements Command {
 
     @Override
     public BaseCommandResult execute(Session session, Message msg) {
-        // TODO почему-то с каждым вызовом команды ее вывод накапливается, разобраться с этим
         LoginMessage userInfoMsg = (LoginMessage) msg;
         switch (userInfoMsg.getArgType()) {
             case SELF_INFO:
                 if (session.getSessionUser() != null) {
-                    commandResult.appendNewLine("login: " + session.getSessionUser().getName());
+                    commandResult.setResponse("login: " + session.getSessionUser().getName() + "\n");
                     commandResult.appendNewLine("password: " + session.getSessionUser().getPass());
                     log.info("Success self_info: {}", session.getSessionUser());
                 } else {
@@ -43,7 +42,7 @@ public class UserInfoCommand implements Command {
             case ID_INFO:
                 User user = userStore.getUserById(userInfoMsg.getUserId());
                 if (user != null) {
-                    commandResult.appendNewLine("login: " + user.getName());
+                    commandResult.setResponse("login: " + user.getName() + "\n");
                     commandResult.appendNewLine("password: " + user.getPass());
                     log.info("Success id_info: {}", userStore.getUserById(userInfoMsg.getUserId()));
                 } else {
