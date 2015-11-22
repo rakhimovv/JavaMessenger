@@ -60,4 +60,9 @@ public class UserStoreStub implements UserStore {
     public User getUserById(Long id) {
         return users.get(id);
     }
+
+    @Override
+    public boolean updateUser(User user) {
+        return false;
+    }
 }

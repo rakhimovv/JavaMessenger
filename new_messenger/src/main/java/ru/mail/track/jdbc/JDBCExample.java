@@ -13,7 +13,7 @@ public class JDBCExample {
         Class.forName("org.postgresql.Driver");
 
         Connection c = DriverManager.getConnection("jdbc:postgresql://178.62.140.149:5432/mydb",
-                "senthil", "ubuntu");
+                "ruslan", "123");
 
         Statement stmt;
         String sql;

@@ -31,17 +31,16 @@ public interface MessageStore {
     /**
      * Добавить сообщение в чат
      */
-    void addMessage(Long chatId, Message message);
+    boolean addMessage(Long chatId, Message message);
 
     /**
      * Добавить пользователя к чату
      */
-    void addUserToChat(Long userId, Long chatId);
+    boolean addUserToChat(Long userId, Long chatId);
 
     /**
      * Создать чат
      */
-    Chat addChat(Chat chat);
 
-    Chat addChat(List<Long> users);
+    Chat createChat(List<Long> users);
 }

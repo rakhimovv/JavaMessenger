@@ -27,4 +27,9 @@ public interface UserStore {
      * Получить пользователя по id, например запрос информации/профиля
      */
     User getUserById(Long id);
+
+    /**
+     * Обновить информацию о пользователе
+     */
+    boolean updateUser(User user);
 }

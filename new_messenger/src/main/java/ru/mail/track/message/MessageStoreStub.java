@@ -86,29 +86,26 @@ public class MessageStoreStub implements MessageStore {
     }
 
     @Override
-    public void addMessage(Long chatId, Message message) {
+    public boolean addMessage(Long chatId, Message message) {
         message.setId(counter.getAndIncrement());
         chats.get(chatId).addMessage(message.getId());
         messages.put(message.getId(), message);
+        return true;
     }
 
     @Override
-    public void addUserToChat(Long userId, Long chatId) {
-
+    public boolean addUserToChat(Long userId, Long chatId) {
+        getChatById(chatId).addParticipant(userId);
+        return true;
     }
 
     @Override
-    public Chat addChat(Chat chat) {
-        chats.put(chats.size() + 1L, chat);
-        return chat;
-    }
-
-    @Override
-    public Chat addChat(List<Long> users) {
+    public Chat createChat(List<Long> users) {
         Chat chat = new Chat();
+        chats.put(chats.size() + 1L, chat);
         for (Long id : users) {
-            chat.addParticipant(id);
+            addUserToChat(id, chat.getId());
         }
-        return addChat(chat);
+        return chat;
     }
 }
