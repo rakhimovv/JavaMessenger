@@ -188,7 +188,7 @@ public class MessageDatabaseStore implements MessageStore {
         }
 
         SendMessage message = (SendMessage) msg;
-
+        log.info("addMessage: sender_id = " + message.getSender() + ", chat_d = " + chatId + ", message = " + message.getMessage());
         try {
             StringBuilder sb = new StringBuilder();
             sb.append("INSERT INTO message_table (sender_id, chat_id, message) values ('")

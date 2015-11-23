@@ -26,6 +26,11 @@ public class CommandHandler implements MessageListener {
     @Override
     public void onMessage(Session session, Message message) {
         Command cmd = commands.get(message.getType());
+        if (session.getSessionUser() != null) {
+            message.setSender(session.getSessionUser().getId());
+        }
+        log.info("Set sender:" + session.getSessionUser());
+
         log.info("onMessage: {} type {}", message, message.getType());
         BaseCommandResult commandResult = cmd.execute(session, message);
 
@@ -40,15 +45,17 @@ public class CommandHandler implements MessageListener {
             default:
         }
 
-        // Отправить текстовый результат выполнения команды
-        try {
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setType(CommandType.MSG_SEND);
-            sendMessage.setChatId(0L);
-            sendMessage.setMessage("\n\n" + commandResult.getResponse() + "\n\n");
-            session.getConnectionHandler().send(sendMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!commandResult.getResponse().isEmpty()) {
+            // Отправить текстовый результат выполнения команды
+            try {
+                SendMessage sendMessage = new SendMessage();
+                sendMessage.setType(CommandType.MSG_SEND);
+                sendMessage.setChatId(0L);
+                sendMessage.setMessage("\n\n" + commandResult.getResponse() + "\n\n");
+                session.getConnectionHandler().send(sendMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
