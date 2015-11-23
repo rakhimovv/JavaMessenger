@@ -191,7 +191,7 @@ public class ThreadedClient implements MessageListener {
                 }
                 break;
             default:
-                System.out.println("Invalid input: " + line);
+                System.out.printf("\nInvalid input: %s\n\n", line);
                 break;
         }
 
@@ -203,7 +203,11 @@ public class ThreadedClient implements MessageListener {
      */
     @Override
     public void onMessage(Session session, Message msg) {
-        System.out.printf("%s", ((SendMessage) msg).getMessage());
+        //if(msg.getSender() == null) {
+        System.out.printf("\n%s\n", ((SendMessage) msg).getMessage());
+        /*} else {
+            System.out.printf("\n%d: %s\n", msg.getSender(), ((SendMessage) msg).getMessage());
+        }*/
     }
 
 }

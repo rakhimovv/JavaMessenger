@@ -48,7 +48,7 @@ public class CommandHandler implements MessageListener {
 
         if (!result.getMessage().isEmpty()) {
             try {
-                result.setMessage("\n" + result.getMessage() + "\n");
+                result.setMessage(result.getMessage());
                 session.getConnectionHandler().send(result);
             } catch (IOException e) {
                 e.printStackTrace();
