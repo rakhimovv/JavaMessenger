@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mail.track.message.Message;
 import ru.mail.track.message.SendMessage;
+import ru.mail.track.message.UserStore;
 import ru.mail.track.session.Session;
 
 /**
@@ -12,6 +13,12 @@ import ru.mail.track.session.Session;
 public class UserPassCommand implements Command {
 
     static Logger log = LoggerFactory.getLogger(UserPassCommand.class);
+
+    private UserStore userStore;
+
+    public UserPassCommand(UserStore userStore) {
+        this.userStore = userStore;
+    }
 
     @Override
     public BaseCommandResult execute(Session session, Message msg) {
@@ -23,6 +30,7 @@ public class UserPassCommand implements Command {
             String[] args = userPassMsg.getMessage().split(">");
             if (session.getSessionUser().getPass().equals(args[0])) {
                 session.getSessionUser().setPass(args[1]);
+                userStore.updateUser(session.getSessionUser());
                 commandResult.setResponse("The password changed.");
                 log.info("Success set_pass: {}", session.getSessionUser());
             } else {

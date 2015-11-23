@@ -64,7 +64,7 @@ public class ThreadedServer {
         Map<CommandType, Command> cmds = new HashMap<>();
         cmds.put(CommandType.USER_LOGIN, new LoginCommand(authService, sessionManager));
         cmds.put(CommandType.USER_INFO, new UserInfoCommand(userStore));
-        cmds.put(CommandType.USER_PASS, new UserPassCommand());
+        cmds.put(CommandType.USER_PASS, new UserPassCommand(userStore));
         cmds.put(CommandType.CHAT_LIST, new ChatListCommand(messageStore));
         cmds.put(CommandType.CHAT_HISTORY, new ChatHistoryCommand(messageStore));
         cmds.put(CommandType.CHAT_FIND, new ChatFindCommand(messageStore));
