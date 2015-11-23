@@ -71,7 +71,7 @@ public class UserDatabaseStore implements UserStore {
     public User getUser(String login, String pass) {
         Map<Integer, Object> prepared = new HashMap<>();
         prepared.put(1, StringEscapeUtils.escapeSql(login));
-        prepared.put(1, StringEscapeUtils.escapeSql(pass));
+        prepared.put(2, StringEscapeUtils.escapeSql(pass));
 
         try {
             User user = queryExecutor.execQuery("SELECT * FROM user_table WHERE login = ? AND password = ? LIMIT 1;",
