@@ -40,7 +40,7 @@ public class ChatCreateCommand implements Command {
                 if (user == null) {
                     commandResult.appendNewLine("User " + id + " doesn't exist.");
                     success = false;
-                } else if (!user.equals(session.getSessionUser())) {
+                } else if (!id.equals(session.getSessionUser().getId())) {
                     // Защита от дурака, т.е. если среди id будет id пользователя
                     participants.add(id);
                 }

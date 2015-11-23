@@ -28,7 +28,7 @@ public class MessageDatabaseStore implements MessageStore {
         }
 
         try {
-            List<Long> chatIds = queryExecutor.execUpdate("INSERT INTO chat_table () values ();");
+            List<Long> chatIds = queryExecutor.execUpdate("INSERT INTO chat_table DEFAULT VALUES");
             Chat newChat = new Chat();
             if (chatIds.size() == 1) {
                 newChat.setId(chatIds.get(0));
@@ -36,7 +36,7 @@ public class MessageDatabaseStore implements MessageStore {
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.append("INSERT INTO chat_user_table (chat_id, user_id) values ");
+            sb.append("INSERT INTO chat_user_table (chat_id, user_id) VALUES ");
 
             for (Long id : userIdList) {
                 sb.append("(").append(newChat.getId()).append(",").append(id).append("),");
