@@ -3,7 +3,7 @@ package ru.mail.track.message;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import ru.mail.track.commands.CommandType;
+import ru.mail.track.commands.base.CommandType;
 
 /**
  *
@@ -16,7 +16,7 @@ public class SendMessage extends Message {
     private Long chatId;
 
     @JsonProperty
-    private String message;
+    private String message = "";
 
     public SendMessage() {
         setType(CommandType.MSG_SEND);

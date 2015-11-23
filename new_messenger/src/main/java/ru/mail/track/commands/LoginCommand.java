@@ -3,6 +3,8 @@ package ru.mail.track.commands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mail.track.AuthorizationService;
+import ru.mail.track.commands.base.Command;
+import ru.mail.track.message.CommandResultMessage;
 import ru.mail.track.message.LoginMessage;
 import ru.mail.track.message.Message;
 import ru.mail.track.message.User;
@@ -12,14 +14,21 @@ import ru.mail.track.session.Session;
 /**
  * Выполняем авторизацию по этой команде
  */
-public class LoginCommand implements Command {
+public class LoginCommand extends Command {
 
     static Logger log = LoggerFactory.getLogger(LoginCommand.class);
 
     private AuthorizationService authService;
     private SessionManager sessionManager;
 
+    public LoginCommand() {
+        super();
+        name = "login";
+        description = "<login> <password> или <login> <password> <repeat_password> Залогиниться или зарегестрироваться.";
+    }
+
     public LoginCommand(AuthorizationService authService, SessionManager sessionManager) {
+        this();
         this.authService = authService;
         this.sessionManager = sessionManager;
     }

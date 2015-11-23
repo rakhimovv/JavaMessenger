@@ -1,5 +1,7 @@
 package ru.mail.track.jdbc;
 
+import ru.mail.track.jdbc.base.DatabaseConnector;
+import ru.mail.track.jdbc.base.QueryExecutor;
 import ru.mail.track.message.User;
 import ru.mail.track.message.UserStore;
 import org.apache.commons.lang.StringEscapeUtils;

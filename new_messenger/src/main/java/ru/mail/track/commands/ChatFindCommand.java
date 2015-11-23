@@ -2,25 +2,30 @@ package ru.mail.track.commands;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.mail.track.message.Chat;
-import ru.mail.track.message.Message;
-import ru.mail.track.message.MessageStore;
-import ru.mail.track.message.SendMessage;
+import ru.mail.track.commands.base.Command;
+import ru.mail.track.message.*;
 import ru.mail.track.session.Session;
 
 /**
  * Найти подстроку в чате
  */
-public class ChatFindCommand implements Command {
+public class ChatFindCommand extends Command {
 
     static Logger log = LoggerFactory.getLogger(ChatListCommand.class);
 
     private MessageStore messageStore;
 
-    public ChatFindCommand(MessageStore messageStore) {
-        this.messageStore = messageStore;
+    public ChatFindCommand() {
+        super();
+        name = "chat_find";
+        description = "<chat_id> <regex> Поиск в чате подстроки, " +
+                "соответсвующей регулярному выражению (только для залогиненных пользователей)";
     }
 
+    public ChatFindCommand(MessageStore messageStore) {
+        this();
+        this.messageStore = messageStore;
+    }
 
     @Override
     public CommandResultMessage execute(Session session, Message msg) {

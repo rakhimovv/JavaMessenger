@@ -2,19 +2,17 @@ package ru.mail.track.net;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.mail.track.commands.CommandType;
+import ru.mail.track.commands.base.CommandType;
 import ru.mail.track.message.LoginMessage;
 import ru.mail.track.message.Message;
 import ru.mail.track.message.SendMessage;
 import ru.mail.track.reflection.di.Auto;
-import ru.mail.track.serialization.JsonProtocol;
 import ru.mail.track.serialization.SerializationProtocol;
 import ru.mail.track.serialization.Protocol;
 import ru.mail.track.session.Session;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.annotation.PostConstruct;

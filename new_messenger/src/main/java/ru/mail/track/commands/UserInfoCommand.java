@@ -2,25 +2,30 @@ package ru.mail.track.commands;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.mail.track.message.LoginMessage;
-import ru.mail.track.message.Message;
-import ru.mail.track.message.User;
-import ru.mail.track.message.UserStore;
+import ru.mail.track.commands.base.Command;
+import ru.mail.track.message.*;
 import ru.mail.track.session.Session;
 
 /**
  * Выполняем информацию о пользователе
  */
-public class UserInfoCommand implements Command {
+public class UserInfoCommand extends Command {
 
     static Logger log = LoggerFactory.getLogger(UserInfoCommand.class);
 
     private UserStore userStore;
 
-    public UserInfoCommand(UserStore userStore) {
-        this.userStore = userStore;
+    public UserInfoCommand() {
+        super();
+        name = "user_info";
+        description = "<id> Получить всю информацию о пользователе, " +
+                "без аргументов - о себе (только для залогиненных пользователей).";
     }
 
+    public UserInfoCommand(UserStore userStore) {
+        this();
+        this.userStore = userStore;
+    }
 
     @Override
     public CommandResultMessage execute(Session session, Message msg) {

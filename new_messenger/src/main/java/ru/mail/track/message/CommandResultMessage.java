@@ -1,4 +1,4 @@
-package ru.mail.track.commands;
+package ru.mail.track.message;
 
 import ru.mail.track.message.SendMessage;
 
@@ -7,7 +7,7 @@ import ru.mail.track.message.SendMessage;
  */
 public class CommandResultMessage extends SendMessage {
 
-    enum Status {
+    public enum Status {
         OK,
         FAILED,
         NOT_LOGGINED,

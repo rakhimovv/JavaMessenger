@@ -1,9 +1,9 @@
-package ru.mail.track.commands;
+package ru.mail.track.commands.base;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.mail.track.message.CommandResultMessage;
 import ru.mail.track.message.Message;
-import ru.mail.track.message.SendMessage;
 import ru.mail.track.net.MessageListener;
 import ru.mail.track.session.Session;
 

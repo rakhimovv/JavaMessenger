@@ -1,4 +1,6 @@
-package ru.mail.track.jdbc;
+package ru.mail.track.jdbc.base;
+
+import ru.mail.track.jdbc.base.ResultHandler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

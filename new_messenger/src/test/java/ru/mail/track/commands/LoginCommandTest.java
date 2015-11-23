@@ -1,11 +1,10 @@
-package ru.mail.track.comands;
+package ru.mail.track.commands;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import ru.mail.track.AuthorizationService;
-import ru.mail.track.commands.LoginCommand;
 import ru.mail.track.message.LoginMessage;
 import ru.mail.track.message.User;
 import ru.mail.track.message.UserStore;

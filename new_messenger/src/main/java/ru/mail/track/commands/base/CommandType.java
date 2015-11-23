@@ -1,4 +1,4 @@
-package ru.mail.track.commands;
+package ru.mail.track.commands.base;
 
 /**
  *

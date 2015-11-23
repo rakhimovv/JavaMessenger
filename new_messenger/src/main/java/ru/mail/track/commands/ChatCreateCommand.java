@@ -2,6 +2,7 @@ package ru.mail.track.commands;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.mail.track.commands.base.Command;
 import ru.mail.track.message.*;
 import ru.mail.track.session.Session;
 
@@ -11,14 +12,22 @@ import java.util.List;
 /**
  * Создать новый чат
  */
-public class ChatCreateCommand implements Command {
+public class ChatCreateCommand extends Command {
 
     static Logger log = LoggerFactory.getLogger(ChatCreateCommand.class);
 
     private MessageStore messageStore;
     private UserStore userStore;
 
+    public ChatCreateCommand() {
+        super();
+        name = "chat_create";
+        description = "<user_id list> Создать новый чат, " +
+                "список пользователей приглашенных в чат (только для залогиненных пользователей).";
+    }
+
     public ChatCreateCommand(UserStore userStore, MessageStore messageStore) {
+        this();
         this.messageStore = messageStore;
         this.userStore = userStore;
     }

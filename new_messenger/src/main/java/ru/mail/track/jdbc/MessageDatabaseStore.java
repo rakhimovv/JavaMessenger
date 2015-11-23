@@ -1,5 +1,7 @@
 package ru.mail.track.jdbc;
 
+import ru.mail.track.jdbc.base.DatabaseConnector;
+import ru.mail.track.jdbc.base.QueryExecutor;
 import ru.mail.track.message.Message;
 import ru.mail.track.message.SendMessage;
 import ru.mail.track.message.MessageStore;

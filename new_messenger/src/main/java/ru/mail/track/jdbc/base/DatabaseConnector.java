@@ -1,4 +1,4 @@
-package ru.mail.track.jdbc;
+package ru.mail.track.jdbc.base;
 
 import org.postgresql.ds.PGPoolingDataSource;
 

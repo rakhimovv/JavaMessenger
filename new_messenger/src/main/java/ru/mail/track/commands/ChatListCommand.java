@@ -2,6 +2,8 @@ package ru.mail.track.commands;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.mail.track.commands.base.Command;
+import ru.mail.track.message.CommandResultMessage;
 import ru.mail.track.message.Message;
 import ru.mail.track.message.MessageStore;
 import ru.mail.track.message.SendMessage;
@@ -12,13 +14,20 @@ import java.util.List;
 /**
  * Вывести список всех чатов пользователя
  */
-public class ChatListCommand implements Command {
+public class ChatListCommand extends Command {
 
     static Logger log = LoggerFactory.getLogger(ChatListCommand.class);
 
     private MessageStore messageStore;
 
+    public ChatListCommand() {
+        super();
+        name = "chat_list";
+        description = "<> Получить список чатов пользователя (только для залогиненных пользователей)";
+    }
+
     public ChatListCommand(MessageStore messageStore) {
+        this();
         this.messageStore = messageStore;
     }
 

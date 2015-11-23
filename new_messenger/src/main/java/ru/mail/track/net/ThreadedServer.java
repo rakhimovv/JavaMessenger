@@ -3,14 +3,14 @@ package ru.mail.track.net;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mail.track.commands.*;
+import ru.mail.track.commands.base.Command;
+import ru.mail.track.commands.base.CommandHandler;
+import ru.mail.track.commands.base.CommandType;
 import ru.mail.track.jdbc.MessageDatabaseStore;
 import ru.mail.track.jdbc.UserDatabaseStore;
 import ru.mail.track.message.MessageStore;
-import ru.mail.track.message.MessageStoreStub;
 import ru.mail.track.message.UserStore;
-import ru.mail.track.message.UserStoreStub;
 import ru.mail.track.serialization.Protocol;
-import ru.mail.track.serialization.JsonProtocol;
 import ru.mail.track.serialization.SerializationProtocol;
 import ru.mail.track.AuthorizationService;
 
@@ -69,7 +69,7 @@ public class ThreadedServer {
         cmds.put(CommandType.CHAT_HISTORY, new ChatHistoryCommand(messageStore));
         cmds.put(CommandType.CHAT_FIND, new ChatFindCommand(messageStore));
         cmds.put(CommandType.CHAT_CREATE, new ChatCreateCommand(userStore, messageStore));
-        cmds.put(CommandType.MSG_SEND, new SendCommand(sessionManager, messageStore));
+        cmds.put(CommandType.MSG_SEND, new ChatSendCommand(sessionManager, messageStore));
         cmds.put(CommandType.USER_HELP, new HelpCommand(cmds));
         CommandHandler handler = new CommandHandler(cmds);
 

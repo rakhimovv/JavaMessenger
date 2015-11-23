@@ -1,9 +1,7 @@
 package ru.mail.track.commands;
 
-import ru.mail.track.message.Chat;
-import ru.mail.track.message.Message;
-import ru.mail.track.message.MessageStore;
-import ru.mail.track.message.SendMessage;
+import ru.mail.track.commands.base.Command;
+import ru.mail.track.message.*;
 import ru.mail.track.net.SessionManager;
 import ru.mail.track.session.Session;
 
@@ -13,12 +11,20 @@ import java.util.List;
 /**
  *
  */
-public class SendCommand implements Command {
+public class ChatSendCommand extends Command {
 
     private MessageStore messageStore;
     private SessionManager sessionManager;
 
-    public SendCommand(SessionManager sessionManager, MessageStore messageStore) {
+    public ChatSendCommand() {
+        super();
+        name = "chat_send";
+        description = "<id> <message> Отправить сообщение в заданный чат, " +
+                "чат должен быть в списке чатов пользователя (только для залогиненных пользователей)";
+    }
+
+    public ChatSendCommand(SessionManager sessionManager, MessageStore messageStore) {
+        this();
         this.sessionManager = sessionManager;
         this.messageStore = messageStore;
     }
