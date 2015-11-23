@@ -23,11 +23,11 @@ public class ChatFindCommand implements Command {
 
 
     @Override
-    public BaseCommandResult execute(Session session, Message msg) {
+    public CommandResultMessage execute(Session session, Message msg) {
         SendMessage chatFindMsg = (SendMessage) msg;
 
-        BaseCommandResult commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
+        CommandResultMessage commandResult = new CommandResultMessage();
+        commandResult.setStatus(CommandResultMessage.Status.OK);
 
         if (session.getSessionUser() != null) {
             String[] args = chatFindMsg.getMessage().split(">");
@@ -37,7 +37,7 @@ public class ChatFindCommand implements Command {
             for (long msgId : chat.getMessageIds()) {
                 SendMessage chatMsg = (SendMessage) messageStore.getMessageById(msgId);
                 if (chatMsg.getMessage().contains(args[1])) {
-                    commandResult.appendNewLine(chatMsg.getMessage());
+                    commandResult.appendResponse(chatMsg.getMessage());
                 }
             }
             if (commandResult.getResponse().isEmpty()) {
@@ -45,7 +45,7 @@ public class ChatFindCommand implements Command {
             }
             log.info("Success chat_find: {}", chat);
         } else {
-            commandResult.setStatus(CommandResult.Status.NOT_LOGGINED);
+            commandResult.setStatus(CommandResultMessage.Status.NOT_LOGGINED);
             log.info("User isn't logged in.");
         }
 

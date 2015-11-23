@@ -26,9 +26,9 @@ public class LoginCommand implements Command {
 
 
     @Override
-    public BaseCommandResult execute(Session session, Message msg) {
-        BaseCommandResult commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
+    public CommandResultMessage execute(Session session, Message msg) {
+        CommandResultMessage commandResult = new CommandResultMessage();
+        commandResult.setStatus(CommandResultMessage.Status.OK);
 
         LoginMessage loginMsg = (LoginMessage) msg;
         String name = loginMsg.getLogin();

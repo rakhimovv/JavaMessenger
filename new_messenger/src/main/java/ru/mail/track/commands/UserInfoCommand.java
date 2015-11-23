@@ -23,27 +23,27 @@ public class UserInfoCommand implements Command {
 
 
     @Override
-    public BaseCommandResult execute(Session session, Message msg) {
-        BaseCommandResult commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
+    public CommandResultMessage execute(Session session, Message msg) {
+        CommandResultMessage commandResult = new CommandResultMessage();
+        commandResult.setStatus(CommandResultMessage.Status.OK);
 
         LoginMessage userInfoMsg = (LoginMessage) msg;
         switch (userInfoMsg.getArgType()) {
             case SELF_INFO:
                 if (session.getSessionUser() != null) {
-                    commandResult.setResponse("login: " + session.getSessionUser().getName() + "\n");
-                    commandResult.appendNewLine("password: " + session.getSessionUser().getPass());
+                    commandResult.setResponse("login: " + session.getSessionUser().getName());
+                    commandResult.appendResponse("password: " + session.getSessionUser().getPass());
                     log.info("Success self_info: {}", session.getSessionUser());
                 } else {
-                    commandResult.setStatus(CommandResult.Status.NOT_LOGGINED);
+                    commandResult.setStatus(CommandResultMessage.Status.NOT_LOGGINED);
                     log.info("User isn't logged in.");
                 }
                 break;
             case ID_INFO:
                 User user = userStore.getUserById(userInfoMsg.getUserId());
                 if (user != null) {
-                    commandResult.setResponse("login: " + user.getName() + "\n");
-                    commandResult.appendNewLine("password: " + user.getPass());
+                    commandResult.setResponse("login: " + user.getName());
+                    commandResult.appendResponse("password: " + user.getPass());
                     log.info("Success id_info: {}", userStore.getUserById(userInfoMsg.getUserId()));
                 } else {
                     log.info("Wrong userId: {}", userInfoMsg.getUserId());

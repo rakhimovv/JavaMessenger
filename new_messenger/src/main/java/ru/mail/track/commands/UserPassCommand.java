@@ -21,9 +21,9 @@ public class UserPassCommand implements Command {
     }
 
     @Override
-    public BaseCommandResult execute(Session session, Message msg) {
-        BaseCommandResult commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
+    public CommandResultMessage execute(Session session, Message msg) {
+        CommandResultMessage commandResult = new CommandResultMessage();
+        commandResult.setStatus(CommandResultMessage.Status.OK);
 
         SendMessage userPassMsg = (SendMessage) msg;
         if (session.getSessionUser() != null) {
@@ -38,7 +38,7 @@ public class UserPassCommand implements Command {
                 log.info("set_pass: Wrong old password.");
             }
         } else {
-            commandResult.setStatus(CommandResult.Status.NOT_LOGGINED);
+            commandResult.setStatus(CommandResultMessage.Status.NOT_LOGGINED);
             log.info("User isn't logged in.");
         }
 

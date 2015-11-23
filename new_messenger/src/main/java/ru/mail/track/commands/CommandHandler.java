@@ -32,27 +32,24 @@ public class CommandHandler implements MessageListener {
         log.info("Set sender:" + session.getSessionUser());
 
         log.info("onMessage: {} type {}", message, message.getType());
-        BaseCommandResult commandResult = cmd.execute(session, message);
 
-        switch (commandResult.getStatus()) {
+        CommandResultMessage result = cmd.execute(session, message);
+
+        switch (result.getStatus()) {
             case OK:
                 break;
             case NOT_LOGGINED:
-                commandResult.setResponse("You must log in.");
+                result.setResponse("You must log in.");
                 break;
             case FAILED:
                 break;
             default:
         }
 
-        if (!commandResult.getResponse().isEmpty()) {
-            // Отправить текстовый результат выполнения команды
+        if (!result.getMessage().isEmpty()) {
             try {
-                SendMessage sendMessage = new SendMessage();
-                sendMessage.setType(CommandType.MSG_SEND);
-                sendMessage.setChatId(0L);
-                sendMessage.setMessage("\n\n" + commandResult.getResponse() + "\n\n");
-                session.getConnectionHandler().send(sendMessage);
+                result.setMessage("\n" + result.getMessage() + "\n");
+                session.getConnectionHandler().send(result);
             } catch (IOException e) {
                 e.printStackTrace();
             }

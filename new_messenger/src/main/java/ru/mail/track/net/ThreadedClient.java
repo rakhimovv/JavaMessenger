@@ -72,7 +72,7 @@ public class ThreadedClient implements MessageListener {
 
     public void processInput(String line) throws IOException {
         String[] tokens = line.split(" ");
-        log.info("Tokens: {}", Arrays.toString(tokens));
+        //log.info("Tokens: {}", Arrays.toString(tokens));
         String cmdType = tokens[0];
         switch (cmdType) {
             case "login":
@@ -99,11 +99,16 @@ public class ThreadedClient implements MessageListener {
                         break;
                 }
                 break;
-            case "send":
+            case "chat_send":
                 SendMessage sendMessage = new SendMessage();
                 sendMessage.setType(CommandType.MSG_SEND);
                 sendMessage.setChatId(Long.valueOf(tokens[1]));
-                sendMessage.setMessage(tokens[2]);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 2; i < tokens.length; i++) {
+                    sb.append(tokens[i]);
+                    sb.append(" ");
+                }
+                sendMessage.setMessage(sb.toString());
                 handler.send(sendMessage);
                 break;
             case "help":

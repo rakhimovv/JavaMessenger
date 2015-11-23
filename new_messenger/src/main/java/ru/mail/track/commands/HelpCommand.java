@@ -23,16 +23,16 @@ public class HelpCommand implements Command {
 
 
     @Override
-    public BaseCommandResult execute(Session session, Message msg) {
+    public CommandResultMessage execute(Session session, Message msg) {
         /**
          * В простом случае просто выводим данные на консоль
          * Если будем работать через сеть, то команде придется передать также объект для работы с сетью
          */
-        BaseCommandResult commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
+        CommandResultMessage commandResult = new CommandResultMessage();
+        commandResult.setStatus(CommandResultMessage.Status.OK);
 
         for (Map.Entry<CommandType, Command> entry : commands.entrySet()) {
-            commandResult.appendNewLine(entry.getKey().toString());
+            commandResult.appendResponse(entry.getKey().toString());
         }
 
         return commandResult;

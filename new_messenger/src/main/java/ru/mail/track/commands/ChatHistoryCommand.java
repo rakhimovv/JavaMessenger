@@ -25,9 +25,9 @@ public class ChatHistoryCommand implements Command {
 
 
     @Override
-    public BaseCommandResult execute(Session session, Message msg) {
-        BaseCommandResult commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
+    public CommandResultMessage execute(Session session, Message msg) {
+        CommandResultMessage commandResult = new CommandResultMessage();
+        commandResult.setStatus(CommandResultMessage.Status.OK);
         SendMessage chatHistoryMsg = (SendMessage) msg;
         if (session.getSessionUser() != null) {
             Long chatId = Long.parseLong(chatHistoryMsg.getMessage());
@@ -39,12 +39,12 @@ public class ChatHistoryCommand implements Command {
                 List<Long> messages = messageStore.getMessagesFromChat(chatId);
                 for (Long id : messages) {
                     SendMessage chatMessage = (SendMessage) messageStore.getMessageById(id);
-                    commandResult.appendNewLine(chatMessage.getMessage());
+                    commandResult.appendResponse(chatMessage.getMessage());
                 }
                 log.info("Success chat_history: {}", commandResult.getResponse());
             }
         } else {
-            commandResult.setStatus(CommandResult.Status.NOT_LOGGINED);
+            commandResult.setStatus(CommandResultMessage.Status.NOT_LOGGINED);
             log.info("User isn't logged in.");
         }
 

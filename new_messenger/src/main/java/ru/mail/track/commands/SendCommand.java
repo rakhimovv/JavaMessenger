@@ -24,9 +24,9 @@ public class SendCommand implements Command {
     }
 
     @Override
-    public BaseCommandResult execute(Session session, Message message) {
-        BaseCommandResult commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
+    public CommandResultMessage execute(Session session, Message message) {
+        CommandResultMessage commandResult = new CommandResultMessage();
+        commandResult.setStatus(CommandResultMessage.Status.OK);
 
         SendMessage sendMessage = (SendMessage) message;
         Chat chat = messageStore.getChatById(sendMessage.getChatId());

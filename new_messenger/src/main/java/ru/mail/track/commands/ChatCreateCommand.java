@@ -25,9 +25,9 @@ public class ChatCreateCommand implements Command {
 
 
     @Override
-    public BaseCommandResult execute(Session session, Message msg) {
-        BaseCommandResult commandResult = new BaseCommandResult();
-        commandResult.setStatus(CommandResult.Status.OK);
+    public CommandResultMessage execute(Session session, Message msg) {
+        CommandResultMessage commandResult = new CommandResultMessage();
+        commandResult.setStatus(CommandResultMessage.Status.OK);
         SendMessage chatCreateMsg = (SendMessage) msg;
         if (session.getSessionUser() != null) {
             List<Long> participants = new ArrayList<>();
@@ -38,7 +38,7 @@ public class ChatCreateCommand implements Command {
                 Long id = Long.parseLong(arg);
                 User user = userStore.getUserById(id);
                 if (user == null) {
-                    commandResult.appendNewLine("User " + id + " doesn't exist.");
+                    commandResult.appendResponse("User " + id + " doesn't exist.");
                     success = false;
                 } else if (!id.equals(session.getSessionUser().getId())) {
                     // Защита от дурака, т.е. если среди id будет id пользователя
@@ -53,7 +53,7 @@ public class ChatCreateCommand implements Command {
                 log.info("Success chat_create: {}", chat);
             }
         } else {
-            commandResult.setStatus(CommandResult.Status.NOT_LOGGINED);
+            commandResult.setStatus(CommandResultMessage.Status.NOT_LOGGINED);
             log.info("User isn't logged in.");
         }
 
