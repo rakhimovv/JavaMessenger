@@ -3,6 +3,7 @@ package ru.mail.track.net;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mail.track.commands.base.CommandType;
+import ru.mail.track.message.CommandResultMessage;
 import ru.mail.track.message.LoginMessage;
 import ru.mail.track.message.Message;
 import ru.mail.track.message.SendMessage;
@@ -203,11 +204,11 @@ public class ThreadedClient implements MessageListener {
      */
     @Override
     public void onMessage(Session session, Message msg) {
-        //if(msg.getSender() == null) {
-        System.out.printf("\n%s\n", ((SendMessage) msg).getMessage());
-        /*} else {
-            System.out.printf("\n%d: %s\n", msg.getSender(), ((SendMessage) msg).getMessage());
-        }*/
+        if (msg.getSender() == null) {
+            System.out.printf("\n%s\n", ((SendMessage) msg).getMessage());
+        } else {
+            System.out.printf("\n%s\n", ((CommandResultMessage) msg).getMessage());
+        }
     }
 
 }
