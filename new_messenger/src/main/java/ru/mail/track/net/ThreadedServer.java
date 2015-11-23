@@ -3,6 +3,8 @@ package ru.mail.track.net;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mail.track.commands.*;
+import ru.mail.track.jdbc.MessageDatabaseStore;
+import ru.mail.track.jdbc.UserDatabaseStore;
 import ru.mail.track.message.MessageStore;
 import ru.mail.track.message.MessageStoreStub;
 import ru.mail.track.message.UserStore;
@@ -53,8 +55,10 @@ public class ThreadedServer {
         //new JsonProtocol();//new StringProtocol();
         SessionManager sessionManager = new SessionManager();
 
-        UserStore userStore = new UserStoreStub();
-        MessageStore messageStore = new MessageStoreStub();
+        UserStore userStore = new UserDatabaseStore();
+        MessageStore messageStore = new MessageDatabaseStore();
+        //UserStore userStore = new UserStoreStub();
+        //MessageStore messageStore = new MessageStoreStub();
         AuthorizationService authService = new AuthorizationService(userStore);
 
         Map<CommandType, Command> cmds = new HashMap<>();

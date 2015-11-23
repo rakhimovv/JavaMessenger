@@ -23,6 +23,26 @@ public class UserDatabaseStore implements UserStore {
 
     @Override
     public boolean isUserExist(String login) {
+        Map<Integer, Object> prepared = new HashMap<>();
+        prepared.put(1, StringEscapeUtils.escapeSql(login));
+
+        try {
+            User user = queryExecutor.execQuery("SELECT * FROM user_table WHERE login = ? LIMIT 1;",
+                    prepared, (r) -> {
+                        if (r.next()) {
+                            User u = new User(r.getString(2), r.getString(3));
+                            u.setId(r.getLong(1));
+                            return u;
+                        }
+                        return null;
+                    });
+            log.info("Get user from db " + user);
+            if (user != null) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
@@ -54,14 +74,15 @@ public class UserDatabaseStore implements UserStore {
         prepared.put(1, StringEscapeUtils.escapeSql(pass));
 
         try {
-            User user = queryExecutor.execQuery("SELECT * FROM user_table WHERE login = ? LIMIT 1;", prepared, (r) -> {
-                if (r.next()) {
-                    User u = new User(r.getString(2), r.getString(3));
-                    u.setId(r.getLong(1));
-                    return u;
-                }
-                return null;
-            });
+            User user = queryExecutor.execQuery("SELECT * FROM user_table WHERE login = ? AND password = ? LIMIT 1;",
+                    prepared, (r) -> {
+                        if (r.next()) {
+                            User u = new User(r.getString(2), r.getString(3));
+                            u.setId(r.getLong(1));
+                            return u;
+                        }
+                        return null;
+                    });
             log.info("Get user from db " + user);
             return user;
         } catch (SQLException e) {
