@@ -16,7 +16,7 @@ import ru.mail.track.commands.base.CommandType;
 @JsonSubTypes({
         @JsonSubTypes.Type(value=LoginMessage.class),
 })
-public class Message implements Serializable {
+public abstract class Message implements Serializable {
 
     private Long id;
     private Long sender;

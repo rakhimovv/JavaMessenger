@@ -3,8 +3,10 @@ package ru.mail.track.commands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mail.track.commands.base.Command;
-import ru.mail.track.message.CommandResultMessage;
+import ru.mail.track.commands.base.CommandResultState;
 import ru.mail.track.message.Message;
+import ru.mail.track.message.User;
+import ru.mail.track.message.result.*;
 import ru.mail.track.message.SendMessage;
 import ru.mail.track.message.UserStore;
 import ru.mail.track.session.Session;
@@ -30,27 +32,25 @@ public class UserPassCommand extends Command {
     }
 
     @Override
-    public CommandResultMessage execute(Session session, Message msg) {
-        CommandResultMessage commandResult = new CommandResultMessage();
-        commandResult.setStatus(CommandResultMessage.Status.OK);
-
-        SendMessage userPassMsg = (SendMessage) msg;
-        if (session.getSessionUser() != null) {
-            String[] args = userPassMsg.getMessage().split(">");
-            if (session.getSessionUser().getPass().equals(args[0])) {
-                session.getSessionUser().setPass(args[1]);
-                userStore.updateUser(session.getSessionUser());
-                commandResult.setResponse("The password changed.");
-                log.info("Success set_pass: {}", session.getSessionUser());
-            } else {
-                commandResult.setResponse("Wrong old password.");
-                log.info("set_pass: Wrong old password.");
-            }
-        } else {
-            commandResult.setStatus(CommandResultMessage.Status.NOT_LOGGINED);
+    public Message execute(Session session, Message msg) {
+        if (session.getSessionUser() == null) {
             log.info("User isn't logged in.");
+            return new CommandResultMessage(CommandResultState.NOT_LOGGED, "You need to login.");
         }
 
-        return commandResult;
+        SendMessage userPassMsg = (SendMessage) msg;
+        User user = userStore.getUserById(userPassMsg.getSender());
+
+        String[] args = userPassMsg.getMessage().split(">");
+        if (user.getPass().equals(args[0])) {
+            user.setPass(args[1]);
+            userStore.updateUser(user);
+            session.setSessionUser(user);
+
+            log.info("Success set_pass: {}", session.getSessionUser());
+            return new CommandResultMessage(CommandResultState.OK, "Password is changed.");
+        }
+        log.info("set_pass: Wrong old password.");
+        return new CommandResultMessage(CommandResultState.FAILED, "Invalid password.");
     }
 }

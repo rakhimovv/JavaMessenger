@@ -1,6 +1,5 @@
 package ru.mail.track.commands.base;
 
-import ru.mail.track.message.CommandResultMessage;
 import ru.mail.track.message.Message;
 import ru.mail.track.session.Session;
 
@@ -17,7 +16,7 @@ public abstract class Command {
     protected String name;
     protected String description;
 
-    public abstract CommandResultMessage execute(Session session, Message message);
+    public abstract Message execute(Session session, Message message);
 
     public String getName() {
         return name;

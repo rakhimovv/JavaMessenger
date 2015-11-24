@@ -1,7 +1,11 @@
 package ru.mail.track.commands;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.mail.track.commands.base.Command;
+import ru.mail.track.commands.base.CommandResultState;
 import ru.mail.track.message.*;
+import ru.mail.track.message.result.*;
 import ru.mail.track.net.SessionManager;
 import ru.mail.track.session.Session;
 
@@ -12,6 +16,7 @@ import java.util.List;
  *
  */
 public class ChatSendCommand extends Command {
+    static Logger log = LoggerFactory.getLogger(ChatSendCommand.class);
 
     private MessageStore messageStore;
     private UserStore userStore;
@@ -32,34 +37,37 @@ public class ChatSendCommand extends Command {
     }
 
     @Override
-    public CommandResultMessage execute(Session session, Message message) {
-        CommandResultMessage commandResult = new CommandResultMessage();
-        commandResult.setStatus(CommandResultMessage.Status.OK);
+    public Message execute(Session session, Message message) {
+        if (session.getSessionUser() == null) {
+            return new CommandResultMessage(CommandResultState.NOT_LOGGED, "You need to login.");
+        }
 
         SendMessage sendMessage = (SendMessage) message;
 
-        if (sendMessage.getSender() == null) {
-            sendMessage.setMessage(sendMessage.getMessage() + "\n");
-        } else {
-            sendMessage.setMessage(userStore.getUserById(sendMessage.getSender()).getName() + ": " +
-                    sendMessage.getMessage() + "\n");
+        Chat chat = messageStore.getChatById(sendMessage.getChatId());
+        if (chat == null) {
+            return new CommandResultMessage(CommandResultState.FAILED, "Chat with id " +
+                    sendMessage.getChatId() + " doesn't exist.");
         }
 
-        Chat chat = messageStore.getChatById(sendMessage.getChatId());
-        messageStore.addMessage(sendMessage.getChatId(), sendMessage);
-
         List<Long> parts = chat.getParticipantIds();
+        if (!parts.contains(message.getSender())) {
+            return new CommandResultMessage(CommandResultState.FAILED, "You can't send message to this chat.");
+        }
+
         try {
+            messageStore.addMessage(sendMessage.getChatId(), sendMessage);
+            sendMessage.setMessage(userStore.getUserById(sendMessage.getSender()).getName() + ": " +
+                    sendMessage.getMessage());
             for (Long userId : parts) {
                 Session userSession = sessionManager.getSessionByUser(userId);
                 if (userSession != null) {
-                    userSession.getConnectionHandler().send(message);
+                    userSession.getConnectionHandler().send(sendMessage);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return commandResult;
+        return null;
     }
 }

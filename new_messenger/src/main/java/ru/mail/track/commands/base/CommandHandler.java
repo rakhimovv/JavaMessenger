@@ -2,7 +2,6 @@ package ru.mail.track.commands.base;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.mail.track.message.CommandResultMessage;
 import ru.mail.track.message.Message;
 import ru.mail.track.net.MessageListener;
 import ru.mail.track.session.Session;
@@ -33,22 +32,10 @@ public class CommandHandler implements MessageListener {
 
         log.info("onMessage: {} type {}", message, message.getType());
 
-        CommandResultMessage result = cmd.execute(session, message);
+        Message result = cmd.execute(session, message);
 
-        switch (result.getStatus()) {
-            case OK:
-                break;
-            case NOT_LOGGINED:
-                result.setResponse("You must log in.");
-                break;
-            case FAILED:
-                break;
-            default:
-        }
-
-        if (!result.getMessage().isEmpty()) {
+        if (result != null) {
             try {
-                result.setMessage(result.getMessage());
                 session.getConnectionHandler().send(result);
             } catch (IOException e) {
                 e.printStackTrace();

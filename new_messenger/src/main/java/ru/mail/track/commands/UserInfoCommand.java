@@ -3,7 +3,9 @@ package ru.mail.track.commands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mail.track.commands.base.Command;
+import ru.mail.track.commands.base.CommandResultState;
 import ru.mail.track.message.*;
+import ru.mail.track.message.result.*;
 import ru.mail.track.session.Session;
 
 /**
@@ -28,37 +30,24 @@ public class UserInfoCommand extends Command {
     }
 
     @Override
-    public CommandResultMessage execute(Session session, Message msg) {
-        CommandResultMessage commandResult = new CommandResultMessage();
-        commandResult.setStatus(CommandResultMessage.Status.OK);
-
-        LoginMessage userInfoMsg = (LoginMessage) msg;
-        switch (userInfoMsg.getArgType()) {
-            case SELF_INFO:
-                if (session.getSessionUser() != null) {
-                    commandResult.setResponse("login: " + session.getSessionUser().getName());
-                    commandResult.appendResponse("password: " + session.getSessionUser().getPass());
-                    log.info("Success self_info: {}", session.getSessionUser());
-                } else {
-                    commandResult.setStatus(CommandResultMessage.Status.NOT_LOGGINED);
-                    log.info("User isn't logged in.");
-                }
-                break;
-            case ID_INFO:
-                User user = userStore.getUserById(userInfoMsg.getUserId());
-                if (user != null) {
-                    commandResult.setResponse("login: " + user.getName());
-                    commandResult.appendResponse("password: " + user.getPass());
-                    log.info("Success id_info: {}", userStore.getUserById(userInfoMsg.getUserId()));
-                } else {
-                    log.info("Wrong userId: {}", userInfoMsg.getUserId());
-                    commandResult.setResponse("Wrong user id.");
-                }
-                break;
-            default:
-                log.info("Wrong argType: {}", userInfoMsg.getArgType());
+    public Message execute(Session session, Message msg) {
+        if (session.getSessionUser() == null) {
+            log.info("User isn't logged in.");
+            return new CommandResultMessage(CommandResultState.NOT_LOGGED, "You need to login.");
         }
 
-        return commandResult;
+        LoginMessage userInfoMsg = (LoginMessage) msg;
+        User user;
+        switch (userInfoMsg.getArgType()) {
+            case SELF_INFO:
+                user = session.getSessionUser();
+                log.info("Success self_info: {}", session.getSessionUser());
+                break;
+            default:
+                user = userStore.getUserById(userInfoMsg.getUserId());
+                break;
+        }
+
+        return new UserInfoResultMessage(user);
     }
 }

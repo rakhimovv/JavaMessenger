@@ -15,11 +15,13 @@ public class SendMessage extends Message {
     @JsonProperty
     private Long chatId;
 
+    private String login;
+
     @JsonProperty
     private String message = "";
 
     public SendMessage() {
-        setType(CommandType.MSG_SEND);
+        setType(CommandType.CHAT_SEND);
     }
 
     public SendMessage(Long chatId, String message) {
@@ -33,6 +35,14 @@ public class SendMessage extends Message {
 
     public void setChatId(Long chatId) {
         this.chatId = chatId;
+    }
+
+    public String getSenderName() {
+        return login;
+    }
+
+    public void setSenderName(String name) {
+        this.login = name;
     }
 
     public String getMessage() {

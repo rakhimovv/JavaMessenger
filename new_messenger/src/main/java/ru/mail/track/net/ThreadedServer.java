@@ -66,10 +66,10 @@ public class ThreadedServer {
         cmds.put(CommandType.USER_INFO, new UserInfoCommand(userStore));
         cmds.put(CommandType.USER_PASS, new UserPassCommand(userStore));
         cmds.put(CommandType.CHAT_LIST, new ChatListCommand(messageStore));
-        cmds.put(CommandType.CHAT_HISTORY, new ChatHistoryCommand(messageStore));
-        cmds.put(CommandType.CHAT_FIND, new ChatFindCommand(messageStore));
+        cmds.put(CommandType.CHAT_HISTORY, new ChatHistoryCommand(userStore, messageStore));
+        cmds.put(CommandType.CHAT_FIND, new ChatFindCommand(userStore, messageStore));
         cmds.put(CommandType.CHAT_CREATE, new ChatCreateCommand(userStore, messageStore));
-        cmds.put(CommandType.MSG_SEND, new ChatSendCommand(sessionManager, userStore, messageStore));
+        cmds.put(CommandType.CHAT_SEND, new ChatSendCommand(sessionManager, userStore, messageStore));
         cmds.put(CommandType.USER_HELP, new HelpCommand(cmds));
         CommandHandler handler = new CommandHandler(cmds);
 

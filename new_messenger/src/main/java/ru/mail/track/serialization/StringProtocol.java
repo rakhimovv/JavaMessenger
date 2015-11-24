@@ -29,7 +29,7 @@ public class StringProtocol implements Protocol {
                 loginMessage.setLogin(tokens[1]);
                 loginMessage.setPass(tokens[2]);
                 return loginMessage;
-            case MSG_SEND:
+            case CHAT_SEND:
                 SendMessage sendMessage = new SendMessage();
                 sendMessage.setChatId(Long.valueOf(tokens[1]));
                 sendMessage.setMessage(tokens[2]);
@@ -50,7 +50,7 @@ public class StringProtocol implements Protocol {
                 builder.append(loginMessage.getLogin()).append(DELIMITER);
                 builder.append(loginMessage.getPass()).append(DELIMITER);
                 break;
-            case MSG_SEND:
+            case CHAT_SEND:
                 SendMessage sendMessage = (SendMessage) msg;
                 builder.append(sendMessage.getChatId()).append(DELIMITER);
                 builder.append(sendMessage.getMessage()).append(DELIMITER);

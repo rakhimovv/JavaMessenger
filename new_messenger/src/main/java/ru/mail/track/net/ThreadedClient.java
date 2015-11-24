@@ -3,17 +3,20 @@ package ru.mail.track.net;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mail.track.commands.base.CommandType;
-import ru.mail.track.message.CommandResultMessage;
 import ru.mail.track.message.LoginMessage;
 import ru.mail.track.message.Message;
 import ru.mail.track.message.SendMessage;
-import ru.mail.track.reflection.di.Auto;
+import ru.mail.track.message.User;
+import ru.mail.track.message.result.*;
 import ru.mail.track.serialization.SerializationProtocol;
 import ru.mail.track.serialization.Protocol;
 import ru.mail.track.session.Session;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import javax.annotation.PostConstruct;
@@ -29,7 +32,6 @@ public class ThreadedClient implements MessageListener {
     static Logger log = LoggerFactory.getLogger(ThreadedClient.class);
     ConnectionHandler handler;
 
-    @Auto(isRequired = true)
     private Protocol protocol = new SerializationProtocol();
     //new JsonProtocol();
 
@@ -100,7 +102,7 @@ public class ThreadedClient implements MessageListener {
                 break;
             case "chat_send":
                 SendMessage sendMessage = new SendMessage();
-                sendMessage.setType(CommandType.MSG_SEND);
+                sendMessage.setType(CommandType.CHAT_SEND);
                 sendMessage.setChatId(Long.valueOf(tokens[1]));
                 StringBuilder sb = new StringBuilder();
                 for (int i = 2; i < tokens.length; i++) {
@@ -203,12 +205,64 @@ public class ThreadedClient implements MessageListener {
      * Получено сообщение из handler, как обрабатывать
      */
     @Override
-    public void onMessage(Session session, Message msg) {
-        if (msg.getSender() == null) {
-            System.out.printf("\n%s\n", ((SendMessage) msg).getMessage());
-        } else {
-            System.out.printf("\n%s\n", ((CommandResultMessage) msg).getMessage());
+    public void onMessage(Session session, Message message) {
+        System.out.println();
+        switch (message.getType()) {
+            case CHAT_CREATE_RESULT: {
+                ChatCreateResultMessage chatCreateResultMessage = (ChatCreateResultMessage) message;
+                System.out.println("New chat id: " + chatCreateResultMessage.getNewChatId());
+                break;
+            }
+            case CHAT_FIND_RESULT: {
+                ChatFindResultMessage chatFindResultMessage = (ChatFindResultMessage) message;
+                chatFindResultMessage.getMessages().forEach(System.out::println);
+                break;
+            }
+            case CHAT_HISTORY_RESULT: {
+                ChatHistoryResultMessage chatHistoryResultMessage = (ChatHistoryResultMessage) message;
+                chatHistoryResultMessage.getMessages().forEach(System.out::println);
+                break;
+            }
+            case CHAT_LIST_RESULT: {
+                ChatListResultMessage chatListResultMessage = (ChatListResultMessage) message;
+                for (Map.Entry<Long, List<Long>> chatData : chatListResultMessage.getChatData().entrySet()) {
+                    System.out.println(chatData.getKey() + ":" + Arrays.toString(chatData.getValue().toArray()));
+                }
+                break;
+            }
+            case HELP_RESULT: {
+                HelpResultMessage helpResultMessage = (HelpResultMessage) message;
+                helpResultMessage.getHelpContent().forEach(System.out::println);
+                break;
+            }
+            case LOGIN_RESULT: {
+                LoginResultMessage loginResultMessage = (LoginResultMessage) message;
+                User user = new User(loginResultMessage.getLogin(), loginResultMessage.getPass());
+                user.setId(loginResultMessage.getUserId());
+                session.setSessionUser(user);
+                System.out.println("Success login. User id: " + user.getId());
+                break;
+            }
+            case USER_INFO_RESULT: {
+                UserInfoResultMessage userInfoResultMessage = (UserInfoResultMessage) message;
+                User user = userInfoResultMessage.getUser();
+                System.out.println("User id: " + user.getId());
+                System.out.println("User login: " + user.getName());
+                break;
+            }
+            case CHAT_SEND: {
+                SendMessage SendMessage = (SendMessage) message;
+                System.out.println("(chat_id=" + SendMessage.getChatId() +
+                        ")" + SendMessage.getMessage());
+                break;
+            }
+            case COMMAND_RESULT: {
+                CommandResultMessage commandResultMessage = (CommandResultMessage) message;
+                System.out.println(commandResultMessage.getData());
+                break;
+            }
         }
+        System.out.println();
     }
 
 }

@@ -1,7 +1,8 @@
 package ru.mail.track.message;
 
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
     private Long id;
     private String name;
     private String pass;
@@ -33,6 +34,21 @@ public class User {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return name.equals(user.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 
     @Override
