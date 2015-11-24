@@ -33,7 +33,6 @@ public class ThreadedClient implements MessageListener {
     ConnectionHandler handler;
 
     private Protocol protocol = new SerializationProtocol();
-    //new JsonProtocol();
 
     public ThreadedClient() {
         init();

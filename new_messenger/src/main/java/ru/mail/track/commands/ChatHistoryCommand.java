@@ -49,6 +49,11 @@ public class ChatHistoryCommand extends Command {
             return new CommandResultMessage(CommandResultState.FAILED, "Chat isn't exists.");
         }
 
+        if (!chat.getParticipantIds().contains(chatHistoryMsg.getSender())) {
+            return new CommandResultMessage(CommandResultState.FAILED,
+                    "You don't belong to participants of this chat.");
+        }
+
         List<String> messages = new ArrayList<>();
         List<Long> msgs = messageStore.getMessagesFromChat(chatId);
         for (Long id : msgs) {
