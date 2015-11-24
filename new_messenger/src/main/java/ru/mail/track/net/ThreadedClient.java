@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.annotation.PostConstruct;
-
 
 /**
  * Клиентская часть
@@ -38,7 +36,6 @@ public class ThreadedClient implements MessageListener {
         init();
     }
 
-    @PostConstruct
     public void init() {
         try {
             Socket socket = new Socket(HOST, PORT);

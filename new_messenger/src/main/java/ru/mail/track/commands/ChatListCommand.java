@@ -50,7 +50,9 @@ public class ChatListCommand extends Command {
             Chat chat = messageStore.getChatById(chatId);
             chatData.put(chatId, chat.getParticipantIds());
         }
-
+        if (chatData.isEmpty()) {
+            return new CommandResultMessage(CommandResultState.OK, "You have no any chats.");
+        }
         return new ChatListResultMessage(chatData);
     }
 }

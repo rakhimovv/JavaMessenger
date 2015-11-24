@@ -25,7 +25,7 @@ public class LoginCommand extends Command {
     public LoginCommand() {
         super();
         name = "login";
-        description = "<login> <password> или <login> <password> <repeat_password> Залогиниться или зарегестрироваться.";
+        description = "\t<login> <password> или <> Залогиниться или зарегестрироваться.";
     }
 
     public LoginCommand(AuthorizationService authService, SessionManager sessionManager) {

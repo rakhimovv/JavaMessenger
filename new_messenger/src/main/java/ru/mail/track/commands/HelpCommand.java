@@ -21,12 +21,11 @@ public class HelpCommand extends Command {
     static Logger log = LoggerFactory.getLogger(HelpCommand.class);
 
     private Map<CommandType, Command> commands;
-    private String answer;
 
     public HelpCommand() {
         super();
         name = "help";
-        description = "<> Показать список команд и общий хэлп по месседжеру.";
+        description = "\t<> Показать список команд и общий хэлп по мессенджеру.";
     }
 
     public HelpCommand(Map<CommandType, Command> commands) {
