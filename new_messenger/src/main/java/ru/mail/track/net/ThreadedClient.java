@@ -99,14 +99,23 @@ public class ThreadedClient implements MessageListener {
             case "chat_send":
                 SendMessage sendMessage = new SendMessage();
                 sendMessage.setType(CommandType.CHAT_SEND);
-                sendMessage.setChatId(Long.valueOf(tokens[1]));
-                StringBuilder sb = new StringBuilder();
-                for (int i = 2; i < tokens.length; i++) {
-                    sb.append(tokens[i]);
-                    sb.append(" ");
+                switch (tokens.length) {
+                    case 1:
+                        System.out.println("Wrong amount of arguments. Try <help>");
+                        break;
+                    case 2:
+                        System.out.println("Wrong amount of arguments. Try <help>");
+                        break;
+                    default:
+                        sendMessage.setChatId(Long.valueOf(tokens[1]));
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 2; i < tokens.length; i++) {
+                            sb.append(tokens[i]);
+                            sb.append(" ");
+                        }
+                        sendMessage.setMessage(sb.toString());
+                        handler.send(sendMessage);
                 }
-                sendMessage.setMessage(sb.toString());
-                handler.send(sendMessage);
                 break;
             case "help":
                 SendMessage helpMessage = new SendMessage();

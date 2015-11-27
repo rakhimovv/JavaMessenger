@@ -13,7 +13,6 @@ import java.util.Map;
 
 /**
  * Обертка для запроса в базу
- * <p>
  * Также можно инкапсулировать Connection внутрь
  */
 public class QueryExecutor {
